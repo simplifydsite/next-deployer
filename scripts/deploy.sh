@@ -28,7 +28,7 @@ export AWS_REGION
 echo "Using s3 bucket ${S3_BUCKET}"
 echo "Using stack name ${STACK_NAME}"
 npm run build
-aws s3 sync --delete dist/ "s3://${S3_BUCKET}/" "${PROFILE_STRING}"
+aws s3 sync --delete out/ "s3://${S3_BUCKET}/" "${PROFILE_STRING}"
 aws cloudfront create-invalidation \
 		--distribution-id "$(aws cloudfront list-distributions "${PROFILE_STRING}" | jq --arg stack_name "${STACK_NAME}" -r '.DistributionList.Items[] | select(.Comment==$stack_name) | .Id')" \
 		"${PROFILE_STRING}" \
