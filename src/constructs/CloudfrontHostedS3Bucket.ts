@@ -9,7 +9,7 @@ import {
   ViewerProtocolPolicy,
 } from 'aws-cdk-lib/aws-cloudfront'
 import { S3BucketOrigin } from 'aws-cdk-lib/aws-cloudfront-origins'
-import { AccessKey, User } from 'aws-cdk-lib/aws-iam'
+import { AccessKey, PolicyStatement, User } from 'aws-cdk-lib/aws-iam'
 import { ARecord, PublicHostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53'
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets'
 import { BlockPublicAccess, Bucket, BucketEncryption, HttpMethods } from 'aws-cdk-lib/aws-s3'
@@ -148,6 +148,10 @@ export class CloudfrontHostedS3Bucket extends Construct {
       this.accessKey = new AccessKey(this, 'DeploymentAccessKey', { user })
       this.bucket.grantReadWrite(user)
       this.distribution.grantCreateInvalidation(user)
+      user.addToPolicy(new PolicyStatement({
+        actions: ['cloudfront:ListDistributions'],
+        resources: ['*'],
+      }))
       new CfnOutput(this, 'AccessKeyId', {
         key: 'AccessKeyId',
         value: this.accessKey.accessKeyId,
