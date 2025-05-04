@@ -6,7 +6,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   authorAddress: 'github.overfed135@passmail.net',
   cdkVersion: '2.194.0',
   defaultReleaseBranch: 'main',
-  name: 'next-deployer',
+  name: '@d4ndel1on/next-deployer',
   projenrcTs: true,
   repositoryUrl: 'https://github.com/d4ndel1on/next-deployer.git',
   eslint: true,
