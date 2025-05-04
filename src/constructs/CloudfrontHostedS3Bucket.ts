@@ -1,4 +1,4 @@
-import { CfnOutput, Duration, RemovalPolicy } from 'aws-cdk-lib'
+import { CfnOutput, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib'
 import { DnsValidatedCertificate } from 'aws-cdk-lib/aws-certificatemanager'
 import {
   CacheHeaderBehavior,
@@ -104,12 +104,11 @@ export class CloudfrontHostedS3Bucket extends Construct {
 
     this.distribution = new Distribution(this, 'Distribution', {
       priceClass: PriceClass.PRICE_CLASS_100,
-      comment: id,
+      comment: Stack.of(this).stackName,
       httpVersion: HttpVersion.HTTP2_AND_3,
       defaultBehavior: {
         origin: S3BucketOrigin.withOriginAccessControl(this.bucket),
         cachePolicy: new CachePolicy(this, 'CachePolicy', {
-          comment: `Cache ${id} Bucket`,
           minTtl: Duration.days(30),
           defaultTtl: Duration.days(30),
           maxTtl: Duration.days(30),
