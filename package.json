@@ -5,6 +5,7 @@
     "url": "https://github.com/d4ndel1on/next-deployer.git"
   },
   "bin": {
+    "add-workflow": "scripts/add_workflow.sh",
     "next-deploy": "scripts/deploy.sh",
     "next-deploy-infrastructure": "scripts/deploy_infrastructure.sh"
   },

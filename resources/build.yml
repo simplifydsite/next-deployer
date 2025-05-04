@@ -1,0 +1,29 @@
+name: Deploy
+on: [push]
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+      - id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1
+        with:
+          arch: arm64
+      - id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - id: install-dependencies
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm ci
+      - id: deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: bash node_modules/@d4ndel1on/next-deployer/scripts/deploy.sh prod

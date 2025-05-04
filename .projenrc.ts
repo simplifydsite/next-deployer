@@ -64,6 +64,7 @@ project.addTask('pack', {
 
 project.addBins({ 'next-deploy': 'scripts/deploy.sh' })
 project.addBins({ 'next-deploy-infrastructure': 'scripts/deploy_infrastructure.sh' })
+project.addBins({ 'add-workflow': 'scripts/add_workflow.sh' })
 
 project.npmignore?.removePatterns('/src/')
 project.npmignore?.addPatterns('/src/**/*.test.ts')
