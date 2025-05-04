@@ -4,7 +4,14 @@
 
 ### extend .gitignore
 
-Add `*.out.json` to gitignore. This makes sure, that credentials are not commited to git.
+Add following lines to the `.gitignore`:
+
+```
+cdk.out
+*.out.json
+``` 
+
+This makes sure, that credentials are not commited to git.
 
 ### deploy infrastructure
 ```bash
