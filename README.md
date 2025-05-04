@@ -27,3 +27,10 @@ npm i cdk tsx
 ```bash
  npx -p @d4ndel1on/next-deployer next-deploy <env>
 ```
+
+### add github workflow [optional]
+
+Add a github workflow to deploy the code to AWS
+```bash
+ npx -p @d4ndel1on/next-deployer add-workflow
+```
