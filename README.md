@@ -11,7 +11,7 @@ cdk.out
 *.out.json
 ``` 
 
-This makes sure, that credentials are not commited to git.
+This makes sure, that credentials are not committed to git.
 
 ### deploy infrastructure
 ```bash
