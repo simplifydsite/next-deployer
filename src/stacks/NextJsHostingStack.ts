@@ -36,7 +36,6 @@ export class NextJsHostingStack extends Stack {
 
     new CloudfrontHostedS3Bucket(this, 'HostedBucket', {
       bucketName: staticAssetsBucketName,
-      websiteIndexDocument: 'index.html',
       deploymentUsername,
       domainName,
       cname,
