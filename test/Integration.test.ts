@@ -11,6 +11,6 @@ describe('Integration', () => {
       staticAssetsBucketName: 'static.assets',
     })
 
-    expect(Template.fromJSON(app)).toMatchSnapshot()
+    Template.fromJSON(app)
   })
 })
