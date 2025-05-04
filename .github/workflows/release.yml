@@ -19,6 +19,7 @@ jobs:
       tag_exists: ${{ steps.check_tag_exists.outputs.exists }}
     env:
       CI: "true"
+      NPM_AUTH_TOKEN: ${{ secrets.PROJEN_GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,9 +32,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: lts/*
+          node-version: 22.15.0
       - name: Install dependencies
-        run: yarn install --check-files --frozen-lockfile
+        run: npm ci
       - name: release
         run: npx projen release
       - name: Check if version has already been tagged
@@ -70,7 +71,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: lts/*
+          node-version: 22.15.0
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -90,11 +91,12 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      packages: write
     if: needs.release.outputs.tag_exists != 'true' && needs.release.outputs.latest_commit == github.sha
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: lts/*
+          node-version: 22.15.0
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -108,7 +110,7 @@ jobs:
         with:
           path: .repo
       - name: Install Dependencies
-        run: cd .repo && yarn install --check-files --frozen-lockfile
+        run: cd .repo && npm ci
       - name: Extract build artifact
         run: tar --strip-components=1 -xzvf dist/js/*.tgz -C .repo
       - name: Move build artifact out of the way
@@ -120,7 +122,9 @@ jobs:
       - name: Release
         env:
           NPM_DIST_TAG: latest
-          NPM_REGISTRY: registry.npmjs.org
+          NPM_REGISTRY: npm.pkg.github.com
           NPM_CONFIG_PROVENANCE: "true"
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx -p publib@latest publib-npm
+    env:
+      NPM_AUTH_TOKEN: ${{ secrets.PROJEN_GITHUB_TOKEN }}

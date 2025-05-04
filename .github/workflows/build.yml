@@ -13,6 +13,7 @@ jobs:
       self_mutation_happened: ${{ steps.self_mutation.outputs.self_mutation_happened }}
     env:
       CI: "true"
+      NPM_AUTH_TOKEN: ${{secrets.PROJEN_GITHUB_TOKEN}}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,9 +23,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: lts/*
+          node-version: 22.15.0
       - name: Install dependencies
-        run: yarn install --check-files
+        run: npm install
       - name: build
         run: npx projen build
       - name: Find mutations
@@ -40,6 +41,7 @@ jobs:
           name: repo.patch
           path: repo.patch
           overwrite: true
+          retention-days: 5
       - name: Fail build on mutation
         if: steps.self_mutation.outputs.self_mutation_happened
         run: |-
@@ -55,6 +57,8 @@ jobs:
           name: build-artifact
           path: dist
           overwrite: true
+          retention-days: 5
+          include-hidden-files: "true"
   self-mutation:
     needs: build
     runs-on: ubuntu-latest
@@ -95,7 +99,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: lts/*
+          node-version: 22.15.0
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -111,7 +115,7 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           path: .repo
       - name: Install Dependencies
-        run: cd .repo && yarn install --check-files --frozen-lockfile
+        run: cd .repo && npm ci
       - name: Extract build artifact
         run: tar --strip-components=1 -xzvf dist/js/*.tgz -C .repo
       - name: Move build artifact out of the way
@@ -120,3 +124,5 @@ jobs:
         run: cd .repo && npx projen package:js
       - name: Collect js artifact
         run: mv .repo/dist dist
+    env:
+      NPM_AUTH_TOKEN: ${{secrets.PROJEN_GITHUB_TOKEN}}
