@@ -4,13 +4,13 @@
 
 ### extend .gitignore
 
-Add following lines to the `.gitignore`:
+Add the following line to the `.gitignore`:
 
 ```
 cdk.out
 ``` 
 
-This makes sure, that credentials are not committed to git.
+This makes sure that credentials are not committed to git.
 
 ### install dependencies
 
