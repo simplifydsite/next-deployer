@@ -121,12 +121,12 @@ export class CloudfrontHostedS3Bucket extends Construct {
         {
           httpStatus: 403,
           responseHttpStatus: 200,
-          responsePagePath: websiteIndexDocument,
+          responsePagePath: `/${websiteIndexDocument}`,
         },
         {
           httpStatus: 404,
           responseHttpStatus: 200,
-          responsePagePath: websiteIndexDocument,
+          responsePagePath: `/${websiteIndexDocument}`,
         },
       ],
       enableIpv6: true,
