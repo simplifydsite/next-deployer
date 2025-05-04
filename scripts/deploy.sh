@@ -14,7 +14,6 @@ then
 else
   echo "Using AWS_PROFILE ${2}"
   export AWS_PROFILE="${2}"
-  export PROFILE_STRING="--profile"
 fi
 
 echo "Using env file .env.${1}"
@@ -29,9 +28,7 @@ export AWS_REGION
 echo "Using s3 bucket ${S3_BUCKET}"
 echo "Using stack name ${STACK_NAME}"
 npm run build
-echo "sync"
-aws s3 sync "${PROFILE_STRING}" "${AWS_PROFILE}" --delete out/ "s3://${S3_BUCKET}/"
-aws cloudfront create-invalidation \
-		--distribution-id "$(aws cloudfront list-distributions "${PROFILE_STRING}" "${AWS_PROFILE}" | jq --arg stack_name "${STACK_NAME}" -r '.DistributionList.Items[] | select(.Comment==$stack_name) | .Id')" \
-		"${PROFILE_STRING}" "${AWS_PROFILE}" \
+AWS_PROFILE=${AWS_PROFILE} aws s3 sync --delete out/ "s3://${S3_BUCKET}/"
+AWS_PROFILE=${AWS_PROFILE} aws cloudfront create-invalidation \
+		--distribution-id "$(AWS_PROFILE=${AWS_PROFILE} aws cloudfront list-distributions | jq --arg stack_name "${STACK_NAME}" -r '.DistributionList.Items[] | select(.Comment==$stack_name) | .Id')" \
 		--paths "/*"
