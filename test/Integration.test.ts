@@ -1,14 +1,20 @@
+import { App } from 'aws-cdk-lib'
 import { Template } from 'aws-cdk-lib/assertions'
-import { buildNextJsHosting } from '../src'
+import { NextJsHostingStack } from '../lib/stacks/NextJsHostingStack'
 
 describe('Integration', () => {
   test('Stack', () => {
-    const { app } = buildNextJsHosting({
+    const app = new App()
+    new NextJsHostingStack(app, 'Stack', {
       stackName: 'NextJsApp',
-      account: '0000000000',
       domainName: 's0na.de',
       cname: 'app',
       staticAssetsBucketName: 'static.assets',
+      deploymentUsername: 'user',
+      env: {
+        account: '000000000',
+        region: 'eu-central-1',
+      },
     })
 
     Template.fromJSON(app)
