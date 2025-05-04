@@ -23,4 +23,4 @@ export CNAME
 export DOMAIN_NAME
 export AWS_REGION
 
-npx cdk deploy --app "npx tsx node_modules/@d4ndel1on/next-deployer/src/index.ts" --all --profile "${2}"
+npx cdk@latest deploy --app "npx tsx node_modules/@d4ndel1on/next-deployer/src/index.ts" --all --profile "${2}"
