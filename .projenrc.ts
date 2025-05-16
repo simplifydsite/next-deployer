@@ -53,6 +53,7 @@ project.eslint?.addRules({
   '@stylistic/semi': ['error', 'never'],
   '@stylistic/comma-dangle': ['error', 'always-multiline'],
 })
+project.eslint?.addIgnorePattern('*-function.ts')
 
 project.tryFindObjectFile('.github/workflows/build.yml')!
   .addOverride('jobs.build.steps.5.with', {
