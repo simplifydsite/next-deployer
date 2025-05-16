@@ -23,8 +23,12 @@ export CNAME
 export DOMAIN_NAME
 export AWS_REGION
 
+PROJECT_NAME=$(cat package.json | jq -r .name)
+OUTPUT_DIR="/tmp/cdk/${PROJECT_NAME}"
+mkdir -p "${OUTPUT_DIR}"
 npx cdk deploy \
   --app "npx tsx node_modules/@d4ndel1on/next-deployer/src/index.ts" \
   --all \
   --profile "${2}" \
-  --outputs-file cdk.out/cdk.out.json
+  --output "${OUTPUT_DIR}"
+  --outputs-file "${OUTPUT_DIR}/cdk.out.json"
