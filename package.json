@@ -50,6 +50,7 @@
     "aws-cdk-lib": "2.194.0",
     "commit-and-tag-version": "^12",
     "constructs": "10.0.5",
+    "esbuild": "^0.25.4",
     "eslint": "^9",
     "eslint-import-resolver-typescript": "^4.3.4",
     "eslint-plugin-import": "^2.31.0",
@@ -70,12 +71,10 @@
     "constructs": "^10.0.5"
   },
   "dependencies": {
-    "esbuild": "^0.25.4",
     "fs-extra": "^10.1.0",
     "humps": "^2.0.1"
   },
   "bundledDependencies": [
-    "esbuild",
     "fs-extra",
     "humps"
   ],
