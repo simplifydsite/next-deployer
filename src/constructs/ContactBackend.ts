@@ -50,7 +50,6 @@ export class ContactBackend extends Construct {
         ALLOWED_ORIGIN: `https://${fullDomain}`,
       },
       layers: [powertoolsLayer],
-
     })
     lambda.addToRolePolicy(new PolicyStatement({
       actions: ['ses:SendEmail'],
