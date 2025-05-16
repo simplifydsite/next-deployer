@@ -70,6 +70,7 @@
     "constructs": "^10.0.5"
   },
   "dependencies": {
+    "esbuild": "^0.25.4",
     "fs-extra": "^10.1.0",
     "humps": "^2.0.1"
   },

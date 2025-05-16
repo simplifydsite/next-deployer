@@ -116,6 +116,10 @@
       "type": "peer"
     },
     {
+      "name": "esbuild",
+      "type": "runtime"
+    },
+    {
       "name": "fs-extra",
       "type": "runtime"
     },
