@@ -13,8 +13,10 @@ import {
 } from 'aws-cdk-lib/aws-cloudfront'
 import { RestApiOrigin } from 'aws-cdk-lib/aws-cloudfront-origins'
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam'
+import { LayerVersion } from 'aws-cdk-lib/aws-lambda'
 import { ARecord, HostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53'
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets'
+import { StringParameter } from 'aws-cdk-lib/aws-ssm'
 import { Construct } from 'constructs'
 import { EmailBackendFunction } from '../lambda/emailBackend-function'
 
@@ -36,12 +38,19 @@ export class ContactBackend extends Construct {
 
     const fullDomain = `contact.${baseDomain}`
 
+    let powertoolsLayer = LayerVersion.fromLayerVersionArn(
+      this,
+      'PowertoolsLayer',
+      StringParameter.valueForStringParameter(this, '/aws/service/powertools/typescript/generic/all/latest'),
+    )
     const lambda = new EmailBackendFunction(this, 'EmailBackend', {
       environment: {
         CLIENT_EMAIL: clientEmail,
         MAIL_FROM: `contact@${mailFromDomain}`,
         ALLOWED_ORIGIN: `https://${fullDomain}`,
       },
+      layers: [powertoolsLayer],
+
     })
     lambda.addToRolePolicy(new PolicyStatement({
       actions: ['ses:SendEmail'],
