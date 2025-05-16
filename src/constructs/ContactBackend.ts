@@ -23,6 +23,7 @@ import { EmailBackendFunction } from '../lambda/emailBackend-function'
 export type ContactBackendProps = {
   clientEmail: string;
   mailFromDomain: string;
+  mailFromDisplayName: string;
   baseDomain: string;
 }
 
@@ -33,6 +34,7 @@ export class ContactBackend extends Construct {
     const {
       clientEmail,
       mailFromDomain,
+      mailFromDisplayName,
       baseDomain,
     } = props
 
@@ -47,6 +49,7 @@ export class ContactBackend extends Construct {
       environment: {
         CLIENT_EMAIL: clientEmail,
         MAIL_FROM: `contact@${mailFromDomain}`,
+        MAIL_FROM_DISPLAY_NAME: mailFromDisplayName,
         ALLOWED_ORIGIN: `https://${fullDomain}`,
       },
       layers: [powertoolsLayer],

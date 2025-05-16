@@ -9,6 +9,10 @@ export type NextJsHostingContactBackendProps = {
    */
   readonly mailFromDomain: string;
   /**
+   * Mail from display name
+   */
+  readonly mailFromDisplayName: string;
+  /**
    * Email address of the client.
    */
   readonly clientEmail: string;
@@ -62,6 +66,7 @@ export class NextJsHostingStack extends Stack {
       new ContactBackend(this, 'ContactBackend', {
         baseDomain: domainName,
         clientEmail: contactBackend.clientEmail,
+        mailFromDisplayName: contactBackend.mailFromDisplayName,
         mailFromDomain: contactBackend.mailFromDomain,
       })
     }

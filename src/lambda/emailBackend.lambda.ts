@@ -13,6 +13,7 @@ import { getMandatoryEnv } from '../utils/getMandatoryEnv'
 const logger = new Logger({ serviceName: 'emailBackend' })
 const CLIENT_EMAIL = getMandatoryEnv('CLIENT_EMAIL')
 const MAIL_FROM = getMandatoryEnv('MAIL_FROM')
+const MAIL_FROM_DISPLAY_NAME = getMandatoryEnv('MAIL_FROM_DISPLAY_NAME')
 const ALLOWED_ORIGIN = getMandatoryEnv('ALLOWED_ORIGIN')
 const sesClient = new SESClient()
 
@@ -34,7 +35,7 @@ const sendEmail = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyRe
     Destination: {
       ToAddresses: [CLIENT_EMAIL],
     },
-    Source: MAIL_FROM,
+    Source: `${MAIL_FROM_DISPLAY_NAME} <${MAIL_FROM}>`,
     Message: {
       Subject: {
         Data: 'Neue Kontaktanfrage',
