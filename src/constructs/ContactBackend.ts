@@ -81,6 +81,9 @@ export class ContactBackend extends Construct {
 
     const usagePlan = new UsagePlan(this, 'UsagePlan', {
       description: 'Contact usage plan',
+      throttle: {
+        rateLimit: 1,
+      },
     })
     usagePlan.addApiStage({
       api: api,
