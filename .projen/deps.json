@@ -98,6 +98,10 @@
       "type": "build"
     },
     {
+      "name": "esbuild",
+      "type": "bundled"
+    },
+    {
       "name": "fs-extra",
       "type": "bundled"
     },

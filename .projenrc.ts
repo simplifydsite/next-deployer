@@ -16,7 +16,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   packageManager: NodePackageManager.NPM,
   minNodeVersion: '22.15.0',
   npmRegistryUrl: 'https://npm.pkg.github.com',
-  bundledDeps: ['humps', 'fs-extra'],
+  bundledDeps: ['humps', 'fs-extra', 'esbuild'],
   deps: ['humps', 'fs-extra', 'esbuild'],
   devDeps: ['@types/humps', '@types/fs-extra', '@types/node'],
 })

@@ -75,6 +75,7 @@
     "humps": "^2.0.1"
   },
   "bundledDependencies": [
+    "esbuild",
     "fs-extra",
     "humps"
   ],
