@@ -115,7 +115,7 @@
     ],
     "@stylistic/semi": [
       "error",
-      "always"
+      "never"
     ],
     "@stylistic/max-len": [
       "error",
@@ -209,14 +209,6 @@
           "method"
         ]
       }
-    ],
-    "semi": [
-      "error",
-      "never"
-    ],
-    "comma-dangle": [
-      "error",
-      "always-multiline"
     ]
   },
   "overrides": [

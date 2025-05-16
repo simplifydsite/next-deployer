@@ -22,8 +22,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
 })
 
 project.eslint?.addRules({
-  'semi': ['error', 'never'],
-  'comma-dangle': ['error', 'always-multiline'],
+  '@stylistic/semi': ['error', 'never'],
+  '@stylistic/comma-dangle': ['error', 'always-multiline'],
 })
 
 project.tryFindObjectFile('.github/workflows/build.yml')!
