@@ -46,6 +46,11 @@ CLIENT_EMAIL=my-customer@my-customer-domain.de
 
 This makes sure that credentials are not committed to git.
 
+### add dependency
+```bash
+npm install --save @d4ndel1on/next-deployer constructs
+```
+
 ### deploy infrastructure
 ```bash
  npx -p @d4ndel1on/next-deployer next-deploy-infrastructure <env> <aws-profile>
