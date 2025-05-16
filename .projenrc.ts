@@ -16,9 +16,9 @@ const project = new awscdk.AwsCdkConstructLibrary({
   packageManager: NodePackageManager.NPM,
   minNodeVersion: '22.15.0',
   npmRegistryUrl: 'https://npm.pkg.github.com',
-  bundledDeps: ['humps', 'fs-extra', 'tsx'],
-  deps: ['humps', 'fs-extra', 'tsx'],
-  devDeps: ['@types/humps', '@types/fs-extra', '@types/node', 'esbuild'],
+  bundledDeps: ['humps', 'fs-extra'],
+  deps: ['humps', 'fs-extra'],
+  devDeps: ['@types/humps', '@types/fs-extra', '@types/node'],
 })
 
 project.eslint?.addRules({

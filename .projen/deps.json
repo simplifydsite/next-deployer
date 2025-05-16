@@ -37,10 +37,6 @@
       "type": "build"
     },
     {
-      "name": "esbuild",
-      "type": "build"
-    },
-    {
       "name": "eslint-import-resolver-typescript",
       "type": "build"
     },
@@ -110,10 +106,6 @@
       "type": "bundled"
     },
     {
-      "name": "tsx",
-      "type": "bundled"
-    },
-    {
       "name": "aws-cdk-lib",
       "version": "^2.194.0",
       "type": "peer"
@@ -129,10 +121,6 @@
     },
     {
       "name": "humps",
-      "type": "runtime"
-    },
-    {
-      "name": "tsx",
       "type": "runtime"
     }
   ],
