@@ -23,6 +23,12 @@ Parameters:
   * e.g. eu-central-1 for Frankfurt or eu-west-1 for Dublin
 * AWS_ACCOUNT
   * AWS Account id
+* MAIL_FROM_DOMAIN [optional]
+  * Add to deploy a contact backend
+  * Domain where the email is sent from
+* CLIENT_EMAIL
+  * Add to deploy a contact backend
+  * Email of the client
 
 Example:
 
@@ -34,6 +40,8 @@ DOMAIN_NAME=my-awesome-domain.de
 CNAME=my-awesome-project
 AWS_REGION=eu-central-1
 AWS_ACCOUNT=XXXXXXXXXXXX
+MAIL_FROM_DOMAIN=my-awesome-mail-domain.de
+CLIENT_EMAIL=my-customer@my-customer-domain.de
 ```
 
 This makes sure that credentials are not committed to git.

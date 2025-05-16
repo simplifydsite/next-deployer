@@ -22,6 +22,8 @@ export AWS_ACCOUNT
 export CNAME
 export DOMAIN_NAME
 export AWS_REGION
+export MAIL_FROM_DOMAIN
+export CLIENT_EMAIL
 
 PROJECT_NAME=$(cat package.json | jq -r .name)
 OUTPUT_DIR="/tmp/cdk/${PROJECT_NAME}"

@@ -16,6 +16,8 @@ export AWS_ACCOUNT
 export CNAME
 export DOMAIN_NAME
 export AWS_REGION
+export MAIL_FROM_DOMAIN
+export CLIENT_EMAIL
 
 if [ -z "${2}" ];
 then

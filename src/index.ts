@@ -11,10 +11,16 @@ const domainName = getMandatoryEnv('DOMAIN_NAME')
 const cname = process.env.CNAME || undefined
 const region = getMandatoryEnv('AWS_REGION')
 const account = getMandatoryEnv('AWS_ACCOUNT')
+const mailFromDomain = process.env.MAIL_FROM_DOMAIN
+const clientEmail = process.env.CLIENT_EMAIL
 new NextJsHostingStack(app, stackName, {
   staticAssetsBucketName: s3Bucket,
   domainName,
   cname,
   deploymentUsername: `${stackName}Deployment`,
   env: { region, account },
+  contactBackend: mailFromDomain && clientEmail ? {
+    mailFromDomain,
+    clientEmail,
+  } : undefined,
 })
