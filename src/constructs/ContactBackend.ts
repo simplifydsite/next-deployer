@@ -54,7 +54,7 @@ export class ContactBackend extends Construct {
     })
     lambda.addToRolePolicy(new PolicyStatement({
       actions: ['ses:SendEmail'],
-      resources: [`*${mailFromDomain}*`],
+      resources: ['*'],
     }))
 
     const corsOptions: CorsOptions = {
