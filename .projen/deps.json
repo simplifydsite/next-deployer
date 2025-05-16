@@ -37,10 +37,6 @@
       "type": "build"
     },
     {
-      "name": "esbuild",
-      "type": "build"
-    },
-    {
       "name": "eslint-import-resolver-typescript",
       "type": "build"
     },
@@ -100,6 +96,10 @@
     {
       "name": "typescript",
       "type": "build"
+    },
+    {
+      "name": "esbuild",
+      "type": "bundled"
     },
     {
       "name": "fs-extra",
