@@ -26,7 +26,10 @@ Parameters:
 * MAIL_FROM_DOMAIN [optional]
   * Add to deploy a contact backend
   * Domain where the email is sent from
-* CLIENT_EMAIL
+* MAIL_FROM_DISPLAY_NAME [optional]
+  * Add to deploy a contact backend
+  * Display name for the email
+* CLIENT_EMAIL [optional]
   * Add to deploy a contact backend
   * Email of the client
 
