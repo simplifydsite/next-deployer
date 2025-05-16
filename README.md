@@ -2,21 +2,41 @@
 
 ## Setup
 
-### extend .gitignore
+### Add `.env.<environment> files`
 
-Add the following line to the `.gitignore`:
+Add a file for each environment you want to have.
 
+Parameters:
+* STACK_NAME
+  * Cloudformation Stack name
+  * Needs to be unique in each aws account
+* S3_BUCKET
+  * AWS S3 Bucket name 
+  * Needs to be globally unique
+* DOMAIN_NAME
+  * Base domain name
+  * HostedZone needs to exist in the AWS Account already
+* CNAME [optional]
+  * CNAME on top of the domain name
+* AWS_REGION
+  * AWS Region
+  * e.g. eu-central-1 for Frankfurt or eu-west-1 for Dublin
+* AWS_ACCOUNT
+  * AWS Account id
+
+Example:
+
+`.env.prod`
 ```
-cdk.out
-``` 
+STACK_NAME=MyAwesomeAwsCloudformationStackName
+S3_BUCKET=my.awesome.s3.bucket.name
+DOMAIN_NAME=my-awesome-domain.de
+CNAME=my-awesome-project
+AWS_REGION=eu-central-1
+AWS_ACCOUNT=XXXXXXXXXXXX
+```
 
 This makes sure that credentials are not committed to git.
-
-### install dependencies
-
-```bash
-npm i cdk tsx
-```
 
 ### deploy infrastructure
 ```bash

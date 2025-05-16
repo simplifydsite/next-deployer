@@ -72,11 +72,13 @@
   },
   "dependencies": {
     "fs-extra": "^10.1.0",
-    "humps": "^2.0.1"
+    "humps": "^2.0.1",
+    "tsx": "^4.19.4"
   },
   "bundledDependencies": [
     "fs-extra",
-    "humps"
+    "humps",
+    "tsx"
   ],
   "keywords": [
     "cdk"

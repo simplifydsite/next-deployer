@@ -110,6 +110,10 @@
       "type": "bundled"
     },
     {
+      "name": "tsx",
+      "type": "bundled"
+    },
+    {
       "name": "aws-cdk-lib",
       "version": "^2.194.0",
       "type": "peer"
