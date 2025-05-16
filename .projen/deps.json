@@ -1,12 +1,24 @@
 {
   "dependencies": [
     {
+      "name": "@aws-lambda-powertools/logger",
+      "type": "build"
+    },
+    {
       "name": "@stylistic/eslint-plugin",
       "version": "^2",
       "type": "build"
     },
     {
+      "name": "@types/aws-lambda",
+      "type": "build"
+    },
+    {
       "name": "@types/fs-extra",
+      "type": "build"
+    },
+    {
+      "name": "@types/http-errors",
       "type": "build"
     },
     {
@@ -102,7 +114,43 @@
       "type": "build"
     },
     {
+      "name": "@aws-sdk/client-ses",
+      "type": "bundled"
+    },
+    {
+      "name": "@middy/core",
+      "type": "bundled"
+    },
+    {
+      "name": "@middy/error-logger",
+      "type": "bundled"
+    },
+    {
+      "name": "@middy/http-cors",
+      "type": "bundled"
+    },
+    {
+      "name": "@middy/http-error-handler",
+      "type": "bundled"
+    },
+    {
+      "name": "@middy/http-header-normalizer",
+      "type": "bundled"
+    },
+    {
+      "name": "@middy/http-router",
+      "type": "bundled"
+    },
+    {
+      "name": "aws-lambda",
+      "type": "bundled"
+    },
+    {
       "name": "fs-extra",
+      "type": "bundled"
+    },
+    {
+      "name": "http-errors",
       "type": "bundled"
     },
     {

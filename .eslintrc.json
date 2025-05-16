@@ -153,6 +153,7 @@
         "devDependencies": [
           "**/test/**",
           "**/build-tools/**",
+          "src/lambda/emailBackend.lambda.ts",
           ".projenrc.ts",
           "projenrc/**/*.ts"
         ],

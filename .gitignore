@@ -48,5 +48,7 @@ junit.xml
 .jsii
 tsconfig.json
 !/API.md
+/assets/
+!/src/lambda/emailBackend-function.ts
 /tmp/
 !/.projenrc.ts

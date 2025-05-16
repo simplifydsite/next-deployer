@@ -1,26 +1,42 @@
 import { Stack, StackProps } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 import { CloudfrontHostedS3Bucket } from '../constructs/CloudfrontHostedS3Bucket'
+import { ContactBackend } from '../constructs/ContactBackend'
+
+export type NextJsHostingContactBackendProps = {
+  /**
+   * Base domain where the email should be sent from
+   */
+  readonly mailFromDomain: string;
+  /**
+   * Email address of the client.
+   */
+  readonly clientEmail: string;
+}
 
 export type NextJsHostingStackProps = {
   /**
    * Unique bucket name to store the static assets in
    */
-  staticAssetsBucketName: string;
+  readonly staticAssetsBucketName: string;
   /**
    * Base domain name for the hosted zone
    */
-  domainName: string;
+  readonly domainName: string;
   /**
    * Cname of the domain to use
    *
    * @default: use domainName only
    */
-  cname?: string;
+  readonly cname?: string;
   /**
    * Deployment username
    */
-  deploymentUsername: string;
+  readonly deploymentUsername: string;
+  /**
+   * Contact backend props
+   */
+  readonly contactBackend?: NextJsHostingContactBackendProps;
 } & StackProps
 
 export class NextJsHostingStack extends Stack {
@@ -32,6 +48,7 @@ export class NextJsHostingStack extends Stack {
       deploymentUsername,
       domainName,
       cname,
+      contactBackend,
     } = props
 
     new CloudfrontHostedS3Bucket(this, 'HostedBucket', {
@@ -40,5 +57,13 @@ export class NextJsHostingStack extends Stack {
       domainName,
       cname,
     })
+
+    if (contactBackend) {
+      new ContactBackend(this, 'ContactBackend', {
+        baseDomain: domainName,
+        clientEmail: contactBackend.clientEmail,
+        mailFromDomain: contactBackend.mailFromDomain,
+      })
+    }
   }
 }

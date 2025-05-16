@@ -1,4 +1,5 @@
 import { awscdk } from 'projen'
+import { LambdaRuntime } from 'projen/lib/awscdk'
 import { NodePackageManager } from 'projen/lib/javascript'
 
 const project = new awscdk.AwsCdkConstructLibrary({
@@ -16,9 +17,36 @@ const project = new awscdk.AwsCdkConstructLibrary({
   packageManager: NodePackageManager.NPM,
   minNodeVersion: '22.15.0',
   npmRegistryUrl: 'https://npm.pkg.github.com',
-  bundledDeps: ['humps', 'fs-extra'],
+  bundledDeps: [
+    'humps',
+    'fs-extra',
+    '@middy/core',
+    '@middy/error-logger',
+    '@middy/http-cors',
+    '@middy/http-header-normalizer',
+    '@middy/http-error-handler',
+    '@middy/http-router',
+    '@aws-sdk/client-ses',
+    'aws-lambda',
+    'http-errors',
+  ],
   deps: ['humps', 'fs-extra'],
-  devDeps: ['@types/humps', '@types/fs-extra', '@types/node', 'esbuild'],
+  devDeps: [
+    '@aws-lambda-powertools/logger',
+    '@types/humps',
+    '@types/fs-extra',
+    '@types/node',
+    'esbuild',
+    '@types/aws-lambda',
+    '@types/http-errors',
+  ],
+  lambdaOptions: {
+    runtime: LambdaRuntime.NODEJS_22_X,
+    bundlingOptions: {
+      externals: ['aws-sdk'],
+      sourcemap: true,
+    },
+  },
 })
 
 project.eslint?.addRules({

@@ -19,4 +19,5 @@
 /LICENSE linguist-generated
 /package-lock.json linguist-generated
 /package.json linguist-generated
+/src/lambda/emailBackend-function.ts linguist-generated
 /tsconfig.dev.json linguist-generated
