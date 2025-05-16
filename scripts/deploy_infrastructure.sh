@@ -30,5 +30,5 @@ npx cdk deploy \
   --app "npx tsx node_modules/@d4ndel1on/next-deployer/src/index.ts" \
   --all \
   --profile "${2}" \
-  --output "${OUTPUT_DIR}"
+  --output "${OUTPUT_DIR}" \
   --outputs-file "${OUTPUT_DIR}/cdk.out.json"
