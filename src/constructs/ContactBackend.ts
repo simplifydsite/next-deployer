@@ -75,8 +75,7 @@ export class ContactBackend extends Construct {
       defaultCorsPreflightOptions: corsOptions,
     })
 
-    api.root
-      .addMethod('POST', new LambdaIntegration(lambda))
+    api.root.addMethod('POST', new LambdaIntegration(lambda))
 
     const zone = HostedZone.fromLookup(this, 'Zone', { domainName: baseDomain })
 

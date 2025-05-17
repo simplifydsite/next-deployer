@@ -21,9 +21,12 @@ const sendEmail = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyRe
   if (!event.body) {
     throw new BadRequest('Body is missing')
   }
-  const body = JSON.parse(event.body)
-  if (!body.from) {
-    throw new BadRequest('Field from is missing')
+  const body = JSON.parse(event.body) as { fromName: string; fromEmail: string; text: string }
+  if (!body.fromName) {
+    throw new BadRequest('Field fromName is missing')
+  }
+  if (!body.fromEmail) {
+    throw new BadRequest('Field fromEmail is missing')
   }
   if (!body.text) {
     throw new BadRequest('Field text is missing')
@@ -46,7 +49,7 @@ const sendEmail = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyRe
           Data: `
                     <h2>Neue Kontaktanfrage</h2>
                     <h5>Von</h5>
-                    <p>${body.from}</p>
+                    <p>${body.fromName} - ${body.fromEmail}</p>
                     <h5>Anfrage:</h5>
                     <p>${body.text}</p>
                 `,

@@ -96,7 +96,8 @@ Example access:
 await fetch(`https://contact.${fullDomain}`, {
   method: 'POST',
   body: JSON.stringiyfy({
-    from: 'my-email@gmail.com',
+    fromName: 'Stefan',
+    fromEmail: 'my-email@gmail.com',
     text: 'My awesome message from the client',
   })
 })
