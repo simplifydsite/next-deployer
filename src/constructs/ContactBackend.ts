@@ -109,7 +109,7 @@ export class ContactBackend extends Construct {
     new ARecord(this, 'CloudFrontRecord', {
       zone,
       target: RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
-      recordName: 'contact',
+      recordName: cname ? `contact.${cname}` : 'contact',
     })
 
     new CfnOutput(this, 'ApiUrl', {
