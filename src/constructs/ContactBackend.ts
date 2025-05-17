@@ -73,9 +73,6 @@ export class ContactBackend extends Construct {
       restApiName: 'ContactBackend',
       endpointTypes: [EndpointType.REGIONAL],
       defaultCorsPreflightOptions: corsOptions,
-      defaultMethodOptions: {
-        apiKeyRequired: true,
-      },
     })
 
     api.root
