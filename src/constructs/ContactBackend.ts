@@ -1,5 +1,5 @@
 import { CfnOutput } from 'aws-cdk-lib'
-import { Cors, CorsOptions, EndpointType, LambdaIntegration, RestApi, UsagePlan } from 'aws-cdk-lib/aws-apigateway'
+import { Cors, CorsOptions, EndpointType, LambdaIntegration, RestApi } from 'aws-cdk-lib/aws-apigateway'
 import { DnsValidatedCertificate } from 'aws-cdk-lib/aws-certificatemanager'
 import {
   AllowedMethods,
@@ -25,6 +25,7 @@ export type ContactBackendProps = {
   mailFromDomain: string;
   mailFromDisplayName: string;
   baseDomain: string;
+  cname?: string;
 }
 
 export class ContactBackend extends Construct {
@@ -36,9 +37,10 @@ export class ContactBackend extends Construct {
       mailFromDomain,
       mailFromDisplayName,
       baseDomain,
+      cname,
     } = props
 
-    const fullDomain = `contact.${baseDomain}`
+    const fullDomain = cname ? `contact.${cname}.${baseDomain}` : `contact.${baseDomain}`
 
     let powertoolsLayer = LayerVersion.fromLayerVersionArn(
       this,
@@ -78,17 +80,6 @@ export class ContactBackend extends Construct {
 
     api.root
       .addMethod('POST', new LambdaIntegration(lambda))
-
-    const usagePlan = new UsagePlan(this, 'UsagePlan', {
-      description: 'Contact usage plan',
-      throttle: {
-        rateLimit: 1,
-      },
-    })
-    usagePlan.addApiStage({
-      api: api,
-      stage: api.deploymentStage,
-    })
 
     const zone = HostedZone.fromLookup(this, 'Zone', { domainName: baseDomain })
 

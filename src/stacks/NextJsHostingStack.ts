@@ -68,6 +68,7 @@ export class NextJsHostingStack extends Stack {
         clientEmail: contactBackend.clientEmail,
         mailFromDisplayName: contactBackend.mailFromDisplayName,
         mailFromDomain: contactBackend.mailFromDomain,
+        cname,
       })
     }
   }
