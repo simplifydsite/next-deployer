@@ -9,6 +9,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   defaultReleaseBranch: 'main',
   name: '@simplifyd/next-deployer',
   projenrcTs: true,
+  minMajorVersion: 1,
   repositoryUrl: 'https://github.com/d4ndel1on/next-deployer.git',
   eslint: true,
   depsUpgradeOptions: {
