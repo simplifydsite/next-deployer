@@ -19,6 +19,8 @@ export AWS_REGION
 export MAIL_FROM_DOMAIN
 export MAIL_FROM_DISPLAY_NAME
 export CLIENT_EMAIL
+export THROTTLING_RATE_LIMIT
+export THROTTLING_WINDOW
 
 if [ -z "${2}" ];
 then

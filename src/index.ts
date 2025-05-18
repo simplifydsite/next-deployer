@@ -14,6 +14,8 @@ const account = getMandatoryEnv('AWS_ACCOUNT')
 const mailFromDomain = process.env.MAIL_FROM_DOMAIN
 const mailFromDisplayName = process.env.MAIL_FROM_DISPLAY_NAME
 const clientEmail = process.env.CLIENT_EMAIL
+const throttlingRateLimit = process.env.THROTTLING_RATE_LIMIT
+const throttlingWindow = process.env.THROTTLING_WINDOW
 new NextJsHostingStack(app, stackName, {
   staticAssetsBucketName: s3Bucket,
   domainName,
@@ -24,5 +26,11 @@ new NextJsHostingStack(app, stackName, {
     mailFromDomain,
     mailFromDisplayName,
     clientEmail,
+    ...(throttlingRateLimit && throttlingWindow && {
+      throttling: {
+        rateLimit: Number(throttlingRateLimit),
+        window: throttlingWindow as 'seconds' | 'minutes' | 'hours',
+      },
+    }),
   } : undefined,
 })

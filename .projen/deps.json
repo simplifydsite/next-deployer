@@ -1,10 +1,6 @@
 {
   "dependencies": [
     {
-      "name": "@aws-lambda-powertools/logger",
-      "type": "build"
-    },
-    {
       "name": "@stylistic/eslint-plugin",
       "version": "^2",
       "type": "build"
@@ -114,7 +110,19 @@
       "type": "build"
     },
     {
+      "name": "@aws-lambda-powertools/logger",
+      "type": "bundled"
+    },
+    {
+      "name": "@aws-sdk/client-dynamodb",
+      "type": "bundled"
+    },
+    {
       "name": "@aws-sdk/client-ses",
+      "type": "bundled"
+    },
+    {
+      "name": "@aws-sdk/util-dynamodb",
       "type": "bundled"
     },
     {
@@ -143,6 +151,10 @@
     },
     {
       "name": "aws-lambda",
+      "type": "bundled"
+    },
+    {
+      "name": "date-fns",
       "type": "bundled"
     },
     {

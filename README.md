@@ -102,3 +102,15 @@ await fetch(`https://contact.${fullDomain}`, {
   })
 })
 ```
+
+#### Add contact backend throttling
+
+If all 2 environment variables are set, the backend will be throttled
+
+```
+THROTTLING_RATE_LIMIT=2
+THROTTLING_WINDOW=seconds
+```
+
+* `THROTTLING_RATE_LIMIT` needs to be between 1 and 20
+* `THROTTLING_WINDOW` can be either `seconds`, `minutes` or `hours`

@@ -315,13 +315,13 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@aws-lambda-powertools/logger,@types/aws-lambda,@types/fs-extra,@types/http-errors,@types/humps,@types/jest,@types/node,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,jsii-diff,jsii-pacmak,projen,ts-jest,ts-node,typescript,@aws-sdk/client-ses,@middy/core,@middy/error-logger,@middy/http-cors,@middy/http-error-handler,@middy/http-header-normalizer,@middy/http-router,aws-lambda,fs-extra,http-errors,humps"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@types/aws-lambda,@types/fs-extra,@types/http-errors,@types/humps,@types/jest,@types/node,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,jest,jsii-diff,jsii-pacmak,projen,ts-jest,ts-node,typescript,@aws-lambda-powertools/logger,@aws-sdk/client-dynamodb,@aws-sdk/client-ses,@aws-sdk/util-dynamodb,@middy/core,@middy/error-logger,@middy/http-cors,@middy/http-error-handler,@middy/http-header-normalizer,@middy/http-router,aws-lambda,date-fns,fs-extra,http-errors,humps"
         },
         {
           "exec": "npm install"
         },
         {
-          "exec": "npm update @aws-lambda-powertools/logger @stylistic/eslint-plugin @types/aws-lambda @types/fs-extra @types/http-errors @types/humps @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version esbuild eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii projen ts-jest ts-node typescript @aws-sdk/client-ses @middy/core @middy/error-logger @middy/http-cors @middy/http-error-handler @middy/http-header-normalizer @middy/http-router aws-lambda fs-extra http-errors humps aws-cdk-lib constructs"
+          "exec": "npm update @stylistic/eslint-plugin @types/aws-lambda @types/fs-extra @types/http-errors @types/humps @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version esbuild eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii projen ts-jest ts-node typescript @aws-lambda-powertools/logger @aws-sdk/client-dynamodb @aws-sdk/client-ses @aws-sdk/util-dynamodb @middy/core @middy/error-logger @middy/http-cors @middy/http-error-handler @middy/http-header-normalizer @middy/http-router aws-lambda date-fns fs-extra http-errors humps aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"

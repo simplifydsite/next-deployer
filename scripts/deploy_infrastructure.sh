@@ -25,6 +25,8 @@ export AWS_REGION
 export MAIL_FROM_DOMAIN
 export MAIL_FROM_DISPLAY_NAME
 export CLIENT_EMAIL
+export THROTTLING_RATE_LIMIT
+export THROTTLING_WINDOW
 
 PROJECT_NAME=$(cat package.json | jq -r .name)
 OUTPUT_DIR="/tmp/cdk/${PROJECT_NAME}"

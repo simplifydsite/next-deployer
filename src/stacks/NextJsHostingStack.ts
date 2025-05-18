@@ -1,7 +1,7 @@
 import { Stack, StackProps } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 import { CloudfrontHostedS3Bucket } from '../constructs/CloudfrontHostedS3Bucket'
-import { ContactBackend } from '../constructs/ContactBackend'
+import { ContactBackend, ContactBackendThrottlingProps } from '../constructs/ContactBackend'
 
 export type NextJsHostingContactBackendProps = {
   /**
@@ -16,6 +16,10 @@ export type NextJsHostingContactBackendProps = {
    * Email address of the client.
    */
   readonly clientEmail: string;
+  /**
+   * Throttling props
+   */
+  readonly throttling?: ContactBackendThrottlingProps;
 }
 
 export type NextJsHostingStackProps = {
@@ -68,6 +72,7 @@ export class NextJsHostingStack extends Stack {
         clientEmail: contactBackend.clientEmail,
         mailFromDisplayName: contactBackend.mailFromDisplayName,
         mailFromDomain: contactBackend.mailFromDomain,
+        throttling: contactBackend.throttling,
         cname,
       })
     }
