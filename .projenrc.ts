@@ -1,19 +1,21 @@
 import { awscdk } from 'projen'
 import { LambdaRuntime } from 'projen/lib/awscdk'
-import { NodePackageManager } from 'projen/lib/javascript'
+import { NodePackageManager, NpmAccess } from 'projen/lib/javascript'
 
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'd4ndel1on',
   authorAddress: 'github.overfed135@passmail.net',
   cdkVersion: '2.196.0',
   defaultReleaseBranch: 'main',
-  name: '@d4ndel1on/next-deployer',
+  name: '@simplifyd/next-deployer',
   projenrcTs: true,
   repositoryUrl: 'https://github.com/d4ndel1on/next-deployer.git',
   eslint: true,
   depsUpgradeOptions: {
     workflow: false,
   },
+
+  npmAccess: NpmAccess.PUBLIC,
   packageManager: NodePackageManager.NPM,
   minNodeVersion: '22.15.0',
   bundledDeps: [
