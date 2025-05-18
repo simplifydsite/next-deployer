@@ -9,6 +9,7 @@ import httpHeaderNormalizer from '@middy/http-header-normalizer'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { BadRequest } from 'http-errors'
 import { getMandatoryEnv } from '../utils/getMandatoryEnv'
+import { isEmail } from '../utils/isEmail'
 
 const logger = new Logger({ serviceName: 'emailBackend' })
 const CLIENT_EMAIL = getMandatoryEnv('CLIENT_EMAIL')
@@ -28,6 +29,9 @@ const sendEmail = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyRe
   if (!body.fromEmail) {
     throw new BadRequest('Field fromEmail is missing')
   }
+  if (!isEmail(body.fromEmail)) {
+    throw new BadRequest('Field fromEmail is not a valid email')
+  }
   if (!body.text) {
     throw new BadRequest('Field text is missing')
   }
@@ -39,6 +43,7 @@ const sendEmail = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyRe
       ToAddresses: [CLIENT_EMAIL],
     },
     Source: `${MAIL_FROM_DISPLAY_NAME} <${MAIL_FROM}>`,
+    ReplyToAddresses: [body.fromEmail],
     Message: {
       Subject: {
         Data: 'Neue Kontaktanfrage',
@@ -48,9 +53,9 @@ const sendEmail = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyRe
         Html: {
           Data: `
                     <h2>Neue Kontaktanfrage</h2>
-                    <h5>Von</h5>
+                    <h3>Von</h3>
                     <p>${body.fromName} - ${body.fromEmail}</p>
-                    <h5>Anfrage:</h5>
+                    <h3>Anfrage:</h3>
                     <p>${body.text}</p>
                 `,
           Charset: 'utf-8',
