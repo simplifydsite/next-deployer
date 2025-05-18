@@ -55,19 +55,19 @@ This makes sure that credentials are not committed to git.
 ### add dependency
 
 ```bash
-npm install --save @d4ndel1on/next-deployer constructs
+npm install --save @simplifyd/next-deployer constructs
 ```
 
 ### deploy infrastructure
 
 ```bash
- npx -p @d4ndel1on/next-deployer next-deploy-infrastructure <env> <aws-profile>
+ npx -p @simplifyd/next-deployer next-deploy-infrastructure <env> <aws-profile>
 ```
 
 ### deploy frontend
 
 ```bash
- npx -p @d4ndel1on/next-deployer next-deploy <env>
+ npx -p @simplifyd/next-deployer next-deploy <env>
 ```
 
 ### add github workflow [optional]
@@ -75,7 +75,7 @@ npm install --save @d4ndel1on/next-deployer constructs
 Add a github workflow to deploy the code to AWS
 
 ```bash
- npx -p @d4ndel1on/next-deployer add-workflow
+ npx -p @simplifyd/next-deployer add-workflow
 ```
 
 ### Add contact backend for email sending
