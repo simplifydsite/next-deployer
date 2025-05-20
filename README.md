@@ -2,7 +2,7 @@
 
 ## Setup
 
-### Add `.env.<environment> files`
+### Add `.env.<environment>` files
 
 Add a file for each environment you want to have.
 
