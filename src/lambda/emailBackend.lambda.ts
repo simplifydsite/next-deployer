@@ -67,10 +67,10 @@ const sendEmail = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyRe
       throw new InternalServerError(JSON.stringify({ error: 'Mail template not found.' }))
     }
     mailTemplate = (await response.Body.transformToString())
-      .replace('{{fromName}}', body.fromName)
-      .replace('{{fromEmail}}', body.fromEmail)
-      .replace('{{text}}', body.text)
-      .replace('{{date}}', format(new Date(), 'dd.MM.yyyy'))
+      .replace(new RegExp('{{fromName}}', 'g'), body.fromName)
+      .replace(new RegExp('{{fromEmail}}', 'g'), body.fromEmail)
+      .replace(new RegExp('{{text}}', 'g'), body.text)
+      .replace(new RegExp('{{date}}', 'g'), format(new Date(), 'dd.MM.yyyy'))
   } else {
     mailTemplate = `
                     <h2>Neue Kontaktanfrage</h2>
