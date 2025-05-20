@@ -21,6 +21,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   bundledDeps: [
     '@aws-lambda-powertools/logger',
     '@aws-sdk/client-dynamodb',
+    '@aws-sdk/client-s3',
     '@aws-sdk/client-ses',
     '@aws-sdk/util-dynamodb',
     '@middy/core',
@@ -37,12 +38,14 @@ const project = new awscdk.AwsCdkConstructLibrary({
   ],
   deps: ['humps', 'fs-extra'],
   devDeps: [
-    '@types/humps',
+    '@types/aws-lambda',
     '@types/fs-extra',
+    '@types/http-errors',
+    '@types/humps',
+    '@types/mjml',
     '@types/node',
     'esbuild',
-    '@types/aws-lambda',
-    '@types/http-errors',
+    'mjml',
   ],
   lambdaOptions: {
     runtime: LambdaRuntime.NODEJS_22_X,

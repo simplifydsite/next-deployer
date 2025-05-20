@@ -13,13 +13,30 @@ export type NextJsHostingContactBackendProps = {
    */
   readonly mailFromDisplayName: string;
   /**
-   * Email address of the client.
+   * Email addresses to send mail to.
+   * Comma separated.
    */
-  readonly clientEmail: string;
+  readonly mailTo: string;
+  /**
+   * Email addresses to send mail to in cc.
+   * Comma separated.
+   */
+  readonly mailCc?: string;
+  /**
+   * Email addresses to send mail to in bcc.
+   * Comma separated.
+   */
+  readonly mailBcc?: string;
   /**
    * Throttling props
    */
   readonly throttling?: ContactBackendThrottlingProps;
+  /**
+   * S3 file key for the MJML template for the email
+   *
+   * @default: use default template
+   */
+  readonly mailTemplateKey?: string;
 }
 
 export type NextJsHostingStackProps = {
@@ -69,7 +86,10 @@ export class NextJsHostingStack extends Stack {
     if (contactBackend) {
       new ContactBackend(this, 'ContactBackend', {
         baseDomain: domainName,
-        clientEmail: contactBackend.clientEmail,
+        mailTo: contactBackend.mailTo,
+        mailCc: contactBackend.mailCc,
+        mailBcc: contactBackend.mailBcc,
+        mailTemplateKey: contactBackend.mailTemplateKey,
         mailFromDisplayName: contactBackend.mailFromDisplayName,
         mailFromDomain: contactBackend.mailFromDomain,
         throttling: contactBackend.throttling,

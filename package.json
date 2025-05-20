@@ -49,6 +49,7 @@
     "@types/http-errors": "^1.8.2",
     "@types/humps": "^2.0.6",
     "@types/jest": "^29.5.14",
+    "@types/mjml": "^4.7.4",
     "@types/node": "^22.15.3",
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
@@ -66,6 +67,7 @@
     "jsii-docgen": "^10.5.0",
     "jsii-pacmak": "^1.111.0",
     "jsii-rosetta": "~5.6.0",
+    "mjml": "4.15.3",
     "projen": "^0.91.29",
     "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
@@ -78,6 +80,7 @@
   "dependencies": {
     "@aws-lambda-powertools/logger": "^2.19.1",
     "@aws-sdk/client-dynamodb": "^3.812.0",
+    "@aws-sdk/client-s3": "^3.812.0",
     "@aws-sdk/client-ses": "^3.810.0",
     "@aws-sdk/util-dynamodb": "^3.812.0",
     "@middy/core": "^6.3.0",
@@ -95,6 +98,7 @@
   "bundledDependencies": [
     "@aws-lambda-powertools/logger",
     "@aws-sdk/client-dynamodb",
+    "@aws-sdk/client-s3",
     "@aws-sdk/client-ses",
     "@aws-sdk/util-dynamodb",
     "@middy/core",

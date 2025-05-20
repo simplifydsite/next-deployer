@@ -26,6 +26,10 @@
       "type": "build"
     },
     {
+      "name": "@types/mjml",
+      "type": "build"
+    },
+    {
       "name": "@types/node",
       "type": "build"
     },
@@ -94,6 +98,10 @@
       "type": "build"
     },
     {
+      "name": "mjml",
+      "type": "build"
+    },
+    {
       "name": "projen",
       "type": "build"
     },
@@ -115,6 +123,10 @@
     },
     {
       "name": "@aws-sdk/client-dynamodb",
+      "type": "bundled"
+    },
+    {
+      "name": "@aws-sdk/client-s3",
       "type": "bundled"
     },
     {

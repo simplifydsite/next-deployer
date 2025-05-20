@@ -30,9 +30,13 @@ Parameters:
 * MAIL_FROM_DISPLAY_NAME [optional]
     * Add to deploy a contact backend
     * Display name for the email
-* CLIENT_EMAIL [optional]
+* MAIL_TO [optional]
     * Add to deploy a contact backend
-    * Email of the client
+    * Email addresses to send to (comma separated)
+* MAIL_CC [optional]
+    * Email addresses to send to in cc (comma separated)
+* MAIL_BCC [optional]
+    * Email addresses to send to in bcc (comma separated)
 
 Example:
 
@@ -47,7 +51,9 @@ AWS_REGION=eu-central-1
 AWS_ACCOUNT=XXXXXXXXXXXX
 MAIL_FROM_DOMAIN=my-awesome-mail-domain.de
 MAIL_FROM_DISPLAY_NAME=My Customer
-CLIENT_EMAIL=my-customer@my-customer-domain.de
+MAIL_TO=my-customer@my-customer-domain.de,my-other-customer@test.de
+MAIL_CC=my-other-customer3@my-customer-domain.de
+MAIL_BCC=my-customer2@my-customer-domain.de,my-other-customer2@test.de
 ```
 
 This makes sure that credentials are not committed to git.
@@ -80,12 +86,14 @@ Add a github workflow to deploy the code to AWS
 
 ### Add contact backend for email sending
 
-If all 3 environment variables are set, the backend will be created
+If `MAIL_FROM_DOMAIN`, `MAIL_FROM_DISPLAY_NAME`, `MAIL_TO` environment variables are set, the backend will be created
 
 ```
 MAIL_FROM_DOMAIN=my-awesome-mail-domain.de
 MAIL_FROM_DISPLAY_NAME=My Customer
-CLIENT_EMAIL=my-customer@my-customer-domain.de
+MAIL_TO=my-customer@my-customer-domain.de,support@customer-domain.de
+MAIL_CC=my-other-customer@my-customer-domain.de
+MAIL_BCC=my-bcc-customer@my-customer-domain.de
 ```
 
 The backend is accessible via the url with a prefix of `contact`
@@ -114,3 +122,19 @@ THROTTLING_WINDOW=seconds
 
 * `THROTTLING_RATE_LIMIT` needs to be between 1 and 20
 * `THROTTLING_WINDOW` can be either `seconds`, `minutes` or `hours`
+
+#### Email theming
+
+To theme your email, mjml can be used.
+Set the environment variable `MAIL_TEMPLATE_MJML` to the path to the template
+
+```
+MAIL_TEMPLATE_MJML=resources/mail/contact_mail.mjml
+```
+
+Following variables can be used to be replaced:
+
+* `{{date}}`: contains the current date
+* `{{fromEmail}}`: contains the email of the contact
+* `{{fromName}}`: contains the name of the contact
+* `{{text}}`: contains the contact text

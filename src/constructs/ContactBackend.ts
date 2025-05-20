@@ -17,9 +17,11 @@ import { PolicyStatement } from 'aws-cdk-lib/aws-iam'
 import { LayerVersion } from 'aws-cdk-lib/aws-lambda'
 import { ARecord, HostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53'
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets'
+import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3'
 import { StringParameter } from 'aws-cdk-lib/aws-ssm'
 import { Construct } from 'constructs'
 import { EmailBackendFunction } from '../lambda/emailBackend-function'
+import { isEmail } from '../utils/isEmail'
 
 export type ContactBackendThrottlingProps = {
   rateLimit: number;
@@ -27,12 +29,15 @@ export type ContactBackendThrottlingProps = {
 }
 
 export type ContactBackendProps = {
-  clientEmail: string;
+  mailTo: string;
+  mailCc?: string;
+  mailBcc?: string;
   mailFromDomain: string;
   mailFromDisplayName: string;
   baseDomain: string;
   cname?: string;
   throttling?: ContactBackendThrottlingProps;
+  mailTemplateKey?: string;
 }
 
 export class ContactBackend extends Construct {
@@ -42,18 +47,34 @@ export class ContactBackend extends Construct {
     super(scope, id)
 
     const {
-      clientEmail,
+      mailTo,
+      mailCc,
+      mailBcc,
       mailFromDomain,
       mailFromDisplayName,
       baseDomain,
       cname,
       throttling,
+      mailTemplateKey,
     } = props
 
     this.addThrottlingValidation(throttling)
+    this.addEmailValidation(props)
 
     const stackName = Stack.of(this).stackName
     const fullDomain = cname ? `contact.${cname}.${baseDomain}` : `contact.${baseDomain}`
+
+    let mailTemplateBucket : Bucket | undefined
+    if (mailTemplateKey) {
+      mailTemplateBucket = new Bucket(this, 'MailTemplateBucket', {
+        bucketName: `${stackName.toLowerCase()}.mail.templates`,
+        encryption: BucketEncryption.S3_MANAGED,
+        removalPolicy: RemovalPolicy.DESTROY,
+        autoDeleteObjects: true,
+        versioned: false,
+        blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      })
+    }
 
     if (throttling) {
       this.throttlingTable = new Table(this, 'ThrottlingTable', {
@@ -74,9 +95,13 @@ export class ContactBackend extends Construct {
     const lambda = new EmailBackendFunction(this, 'EmailBackend', {
       description: `${stackName} Contact Backend`,
       environment: {
-        CLIENT_EMAIL: clientEmail,
+        MAIL_TO: mailTo,
+        MAIL_CC: mailCc || '',
+        MAIL_BCC: mailBcc || '',
         MAIL_FROM: `contact@${mailFromDomain}`,
         MAIL_FROM_DISPLAY_NAME: mailFromDisplayName,
+        MAIL_TEMPLATE_BUCKET: mailTemplateBucket?.bucketName || '',
+        MAIL_TEMPLATE_KEY: mailTemplateKey || '',
         ALLOWED_ORIGIN: `https://${fullDomain}`,
         ...(throttling && {
           THROTTLING_TABLE_NAME: this.throttlingTable!.tableName,
@@ -91,6 +116,7 @@ export class ContactBackend extends Construct {
       resources: ['*'],
     }))
     this.throttlingTable?.grantReadWriteData(lambda)
+    mailTemplateBucket?.grantRead(lambda)
 
     const corsOptions: CorsOptions = {
       allowCredentials: true,
@@ -116,7 +142,6 @@ export class ContactBackend extends Construct {
       hostedZone: zone,
     })
 
-
     const distribution = new Distribution(this, 'Distribution', {
       comment: `${stackName} Contact Backend`,
       defaultBehavior: {
@@ -140,6 +165,14 @@ export class ContactBackend extends Construct {
       recordName: cname ? `contact.${cname}` : 'contact',
     })
 
+    if (mailTemplateBucket) {
+      new CfnOutput(this, 'MailTemplateBucketName', {
+        description: 'ContactBackend Mail template bucket name',
+        key: 'ContactBackendMailTemplateBucketName',
+        value: mailTemplateBucket.bucketName,
+      })
+    }
+
     new CfnOutput(this, 'ApiUrl', {
       description: 'ImportAdapter API Url',
       key: 'ContactBackendUrl',
@@ -162,5 +195,38 @@ export class ContactBackend extends Construct {
         },
       })
     }
+  }
+
+  private addEmailValidation = (props: ContactBackendProps) => {
+    this.node.addValidation({
+      validate(): string[] {
+        const errors: string[] = []
+        if (!props.mailTo) {
+          errors.push('Property mailTo is missing. Either remove all mail props or add the necessary ones')
+        }
+        if (props.mailTo) {
+          for (const mailTo of props.mailTo.split(',').map(m => m.trim())) {
+            if (!isEmail(mailTo)) {
+              errors.push(`Property mailTo contains invalid email ${mailTo}`)
+            }
+          }
+        }
+        if (props.mailCc) {
+          for (const mailCc of props.mailCc.split(',').map(m => m.trim())) {
+            if (!isEmail(mailCc)) {
+              errors.push(`Property mailCc contains invalid email ${mailCc}`)
+            }
+          }
+        }
+        if (props.mailBcc) {
+          for (const mailBcc of props.mailBcc.split(',').map(m => m.trim())) {
+            if (!isEmail(mailBcc)) {
+              errors.push(`Property mailBcc contains invalid email ${mailBcc}`)
+            }
+          }
+        }
+        return errors
+      },
+    })
   }
 }
