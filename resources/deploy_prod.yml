@@ -1,10 +1,12 @@
 name: Deploy
-on: [push]
+on:
+  push:
+    branches:
+      main
 jobs:
   deploy-prod:
     runs-on: ubuntu-latest
     environment: prod
-    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
