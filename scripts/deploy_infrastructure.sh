@@ -45,7 +45,7 @@ else
 fi
 
 PROJECT_NAME=$(cat package.json | jq -r .name)
-OUTPUT_DIR="/tmp/cdk/${PROJECT_NAME}"
+OUTPUT_DIR="/tmp/cdk/${PROJECT_NAME}/${1}"
 CDK_OUT_FILE="${OUTPUT_DIR}/cdk.out.json"
 mkdir -p "${OUTPUT_DIR}"
 npx cdk deploy \
