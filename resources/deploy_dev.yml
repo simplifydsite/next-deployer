@@ -6,7 +6,7 @@ jobs:
   deploy-dev:
     runs-on: ubuntu-latest
     environment: dev
-    if: ${{ github.event.label.name == 'deploy_dev' }}
+    if: contains(github.event.pull_request.labels.*.name, 'deploy_dev')
     steps:
       - name: Checkout
         uses: actions/checkout@v4
