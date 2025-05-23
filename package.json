@@ -2,7 +2,7 @@
   "name": "@simplifyd/next-deployer",
   "repository": {
     "type": "git",
-    "url": "https://github.com/d4ndel1on/next-deployer.git"
+    "url": "https://github.com/simplifydsite/next-deployer.git"
   },
   "bin": {
     "add-workflows": "scripts/add_workflows.sh",
