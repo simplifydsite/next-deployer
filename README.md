@@ -61,7 +61,7 @@ This makes sure that credentials are not committed to git.
 ### add dependency
 
 ```bash
-npm install --save @simplifyd/next-deployer constructs
+npm install --save-dev @simplifyd/next-deployer tsx
 ```
 
 ### deploy infrastructure
