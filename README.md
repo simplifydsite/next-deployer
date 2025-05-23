@@ -76,13 +76,15 @@ npm install --save-dev @simplifyd/next-deployer tsx
  npx -p @simplifyd/next-deployer next-deploy <env>
 ```
 
-### add github workflow [optional]
+### add github workflows [optional]
 
 Add a github workflow to deploy the code to AWS
 
 ```bash
- npx -p @simplifyd/next-deployer add-workflow
+ npx -p @simplifyd/next-deployer add-workflows
 ```
+
+Will automatically deploy pushes to main to production and pull requests with a label called `test` to dev.
 
 ### Add contact backend for email sending
 
