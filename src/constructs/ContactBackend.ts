@@ -1,4 +1,4 @@
-import { CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib'
+import { CfnOutput, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib'
 import { Cors, CorsOptions, EndpointType, LambdaIntegration, RestApi } from 'aws-cdk-lib/aws-apigateway'
 import { DnsValidatedCertificate } from 'aws-cdk-lib/aws-certificatemanager'
 import {
@@ -14,7 +14,7 @@ import {
 import { RestApiOrigin } from 'aws-cdk-lib/aws-cloudfront-origins'
 import { AttributeType, BillingMode, Table, TableEncryption } from 'aws-cdk-lib/aws-dynamodb'
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam'
-import { LayerVersion } from 'aws-cdk-lib/aws-lambda'
+import { Architecture, LayerVersion } from 'aws-cdk-lib/aws-lambda'
 import { ARecord, HostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53'
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets'
 import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3'
@@ -64,7 +64,7 @@ export class ContactBackend extends Construct {
     const stackName = Stack.of(this).stackName
     const fullDomain = cname ? `contact.${cname}.${baseDomain}` : `contact.${baseDomain}`
 
-    let mailTemplateBucket : Bucket | undefined
+    let mailTemplateBucket: Bucket | undefined
     if (mailTemplateKey) {
       mailTemplateBucket = new Bucket(this, 'MailTemplateBucket', {
         bucketName: `${stackName.toLowerCase()}.mail.templates`,
@@ -94,6 +94,9 @@ export class ContactBackend extends Construct {
     )
     const lambda = new EmailBackendFunction(this, 'EmailBackend', {
       description: `${stackName} Contact Backend`,
+      architecture: Architecture.ARM_64,
+      memorySize: 512,
+      timeout: Duration.seconds(5),
       environment: {
         MAIL_TO: mailTo,
         MAIL_CC: mailCc || '',
