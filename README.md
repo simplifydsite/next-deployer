@@ -2,6 +2,18 @@
 
 ## Setup
 
+### Use `export` as output type for the Next configuration
+
+Only a static export can be deployed with @simplifyd/next-deployer
+
+Set `output` to `export` in `next.config.ts`
+
+```typescript
+const nextConfig: NextConfig = {
+  output: 'export', // creates a static export
+};
+```
+
 ### Add `.env.<environment>` files
 
 Add a file for each environment you want to have.
