@@ -63,6 +63,7 @@ export class ContactBackend extends Construct {
 
     const stackName = Stack.of(this).stackName
     const fullDomain = cname ? `contact.${cname}.${baseDomain}` : `contact.${baseDomain}`
+    const corsOrigin = cname ? `https://${cname}.${baseDomain}` : `https://${baseDomain}`
 
     let mailTemplateBucket: Bucket | undefined
     if (mailTemplateKey) {
@@ -105,7 +106,7 @@ export class ContactBackend extends Construct {
         MAIL_FROM_DISPLAY_NAME: mailFromDisplayName,
         MAIL_TEMPLATE_BUCKET: mailTemplateBucket?.bucketName || '',
         MAIL_TEMPLATE_KEY: mailTemplateKey || '',
-        ALLOWED_ORIGIN: `https://${fullDomain}`,
+        ALLOWED_ORIGIN: corsOrigin,
         ...(throttling && {
           THROTTLING_TABLE_NAME: this.throttlingTable!.tableName,
           THROTTLING_RATE_LIMIT: throttling.rateLimit.toString(),

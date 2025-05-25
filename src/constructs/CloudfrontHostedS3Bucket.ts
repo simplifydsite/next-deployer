@@ -8,7 +8,7 @@ import {
   PriceClass,
   ViewerProtocolPolicy,
 } from 'aws-cdk-lib/aws-cloudfront'
-import { S3BucketOrigin } from 'aws-cdk-lib/aws-cloudfront-origins'
+import { S3StaticWebsiteOrigin } from 'aws-cdk-lib/aws-cloudfront-origins'
 import { AccessKey, PolicyStatement, User } from 'aws-cdk-lib/aws-iam'
 import { ARecord, PublicHostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53'
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets'
@@ -80,10 +80,11 @@ export class CloudfrontHostedS3Bucket extends Construct {
 
     this.bucket = new Bucket(this, 'Bucket', {
       websiteIndexDocument: websiteIndexDocument,
-      websiteErrorDocument: websiteIndexDocument,
+      autoDeleteObjects: true,
       bucketName,
-      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
+      publicReadAccess: true,
+      blockPublicAccess: BlockPublicAccess.BLOCK_ACLS_ONLY,
       removalPolicy: RemovalPolicy.DESTROY,
       versioned: false,
       lifecycleRules: [
@@ -107,7 +108,7 @@ export class CloudfrontHostedS3Bucket extends Construct {
       comment: Stack.of(this).stackName,
       httpVersion: HttpVersion.HTTP2_AND_3,
       defaultBehavior: {
-        origin: S3BucketOrigin.withOriginAccessControl(this.bucket),
+        origin: new S3StaticWebsiteOrigin(this.bucket),
         cachePolicy: new CachePolicy(this, 'CachePolicy', {
           minTtl: Duration.days(30),
           defaultTtl: Duration.days(30),
@@ -117,18 +118,6 @@ export class CloudfrontHostedS3Bucket extends Construct {
         viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         compress: true,
       },
-      errorResponses: [
-        {
-          httpStatus: 403,
-          responseHttpStatus: 200,
-          responsePagePath: `/${websiteIndexDocument}`,
-        },
-        {
-          httpStatus: 404,
-          responseHttpStatus: 200,
-          responsePagePath: `/${websiteIndexDocument}`,
-        },
-      ],
       enableIpv6: true,
       domainNames: [`${fullDomain}`],
       certificate,
