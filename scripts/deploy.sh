@@ -37,7 +37,9 @@ fi
 
 echo "Using s3 bucket ${S3_BUCKET}"
 echo "Using stack name ${STACK_NAME}"
+cp ".env.${1}" .env
 npm run build
+rm .env
 aws s3 sync --delete out/ "s3://${S3_BUCKET}/"
 aws cloudfront create-invalidation \
 		--distribution-id "$(aws cloudfront list-distributions | jq --arg stack_name "${STACK_NAME}" -r '.DistributionList.Items[] | select(.Comment==$stack_name) | .Id')" \
