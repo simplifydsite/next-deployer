@@ -130,6 +130,10 @@
       "type": "bundled"
     },
     {
+      "name": "@aws-sdk/client-secrets-manager",
+      "type": "bundled"
+    },
+    {
       "name": "@aws-sdk/client-ses",
       "type": "bundled"
     },
@@ -171,6 +175,10 @@
     },
     {
       "name": "fs-extra",
+      "type": "bundled"
+    },
+    {
+      "name": "googleapis",
       "type": "bundled"
     },
     {

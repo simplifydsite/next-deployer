@@ -36,9 +36,9 @@ Parameters:
     * e.g. eu-central-1 for Frankfurt or eu-west-1 for Dublin
 * AWS_ACCOUNT
     * AWS Account id
-* MAIL_FROM_DOMAIN [optional]
+* MAIL_FROM [optional]
     * Add to deploy a contact backend
-    * Domain where the email is sent from
+    * Email to send from
 * MAIL_FROM_DISPLAY_NAME [optional]
     * Add to deploy a contact backend
     * Display name for the email
@@ -49,6 +49,10 @@ Parameters:
     * Email addresses to send to in cc (comma separated)
 * MAIL_BCC [optional]
     * Email addresses to send to in bcc (comma separated)
+* GMAIL_SECRET_ARN [optional]
+    * Secret that contains the gmail credentials
+* MAIL_TEMPLATE_MJML [optional]
+    * Styling template for the email
 
 Example:
 
@@ -66,6 +70,7 @@ MAIL_FROM_DISPLAY_NAME=My Customer
 MAIL_TO=my-customer@my-customer-domain.de,my-other-customer@test.de
 MAIL_CC=my-other-customer3@my-customer-domain.de
 MAIL_BCC=my-customer2@my-customer-domain.de,my-other-customer2@test.de
+GMAIL_SECRET_ARN=arn:aws:secretsmanager:eu-central-1:123456789101:secret:GoogleMailSecret-bExa7h
 ```
 
 This makes sure that credentials are not committed to git.
@@ -100,15 +105,23 @@ Will automatically deploy pushes to main to production and pull requests with a 
 
 ### Add contact backend for email sending
 
-If `MAIL_FROM_DOMAIN`, `MAIL_FROM_DISPLAY_NAME`, `MAIL_TO` environment variables are set, the backend will be created
+If `MAIL_FROM`, `MAIL_FROM_DISPLAY_NAME`, `MAIL_TO`, `GMAIL_SECRET_ARN` environment variables are set, the
+backend will be created
 
 ```
-MAIL_FROM_DOMAIN=my-awesome-mail-domain.de
+MAIL_FROM=contact@my-awesome-mail-domain.de
 MAIL_FROM_DISPLAY_NAME=My Customer
 MAIL_TO=my-customer@my-customer-domain.de,support@customer-domain.de
 MAIL_CC=my-other-customer@my-customer-domain.de
 MAIL_BCC=my-bcc-customer@my-customer-domain.de
+GMAIL_SECRET_ARN=arn:aws:secretsmanager:eu-central-1:123456789101:secret:GoogleMailSecret-bExa7h
 ```
+
+The gmail secret needs to be a service account for GMAIL. It needs to have the scope
+`https://www.googleapis.com/auth/gmail.send` assigned. It needs to contain following json fields:
+
+* private_key
+* client_mail
 
 The backend is accessible via the url with a prefix of `contact`
 

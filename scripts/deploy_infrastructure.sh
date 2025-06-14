@@ -22,7 +22,7 @@ export AWS_ACCOUNT
 export CNAME
 export DOMAIN_NAME
 export AWS_REGION
-export MAIL_FROM_DOMAIN
+export MAIL_FROM
 export MAIL_FROM_DISPLAY_NAME
 export MAIL_TO
 export MAIL_CC
@@ -30,6 +30,7 @@ export MAIL_BCC
 export THROTTLING_RATE_LIMIT
 export THROTTLING_WINDOW
 export MAIL_TEMPLATE_MJML
+export GMAIL_SECRET_ARN
 
 if [[ -n "${MAIL_TEMPLATE_MJML}" && -f "${MAIL_TEMPLATE_MJML}" ]]; then
   echo "* MAIL_TEMPLATE found."
