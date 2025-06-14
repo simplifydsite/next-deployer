@@ -11,7 +11,7 @@ const domainName = getMandatoryEnv('DOMAIN_NAME')
 const cname = process.env.CNAME || undefined
 const region = getMandatoryEnv('AWS_REGION')
 const account = getMandatoryEnv('AWS_ACCOUNT')
-const mailFromDomain = process.env.MAIL_FROM_DOMAIN
+const mailFrom = process.env.MAIL_FROM
 const mailFromDisplayName = process.env.MAIL_FROM_DISPLAY_NAME
 const mailTo = process.env.MAIL_TO
 const mailCc = process.env.MAIL_CC
@@ -19,19 +19,21 @@ const mailBcc = process.env.MAIL_BCC
 const mailTemplateKey = process.env.MAIL_TEMPLATE_KEY
 const throttlingRateLimit = process.env.THROTTLING_RATE_LIMIT
 const throttlingWindow = process.env.THROTTLING_WINDOW
+const gmailSecretArn = process.env.GMAIL_SECRET_ARN
 
 let contactBackendProps: ContactBackendProps | undefined = undefined
-if (mailFromDomain || mailFromDisplayName || mailTo || mailCc || mailBcc) {
-  if (!mailFromDomain || !mailFromDisplayName || !mailTo) {
+if (mailFrom || mailFromDisplayName || mailTo || mailCc || mailBcc || gmailSecretArn) {
+  if (!mailFrom || !mailFromDisplayName || !mailTo || !gmailSecretArn) {
     throw new Error('Either specify all mail properties or none.')
   } else {
     contactBackendProps = {
-      mailFromDomain,
+      mailFrom,
       mailFromDisplayName,
       mailTo,
       mailCc,
       mailBcc,
       mailTemplateKey,
+      gmailSecretArn,
       baseDomain: domainName,
       ...(throttlingRateLimit && throttlingWindow && {
         throttling: {

@@ -13,11 +13,11 @@ import {
 } from 'aws-cdk-lib/aws-cloudfront'
 import { RestApiOrigin } from 'aws-cdk-lib/aws-cloudfront-origins'
 import { AttributeType, BillingMode, Table, TableEncryption } from 'aws-cdk-lib/aws-dynamodb'
-import { PolicyStatement } from 'aws-cdk-lib/aws-iam'
 import { Architecture, LayerVersion } from 'aws-cdk-lib/aws-lambda'
 import { ARecord, HostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53'
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets'
 import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3'
+import { Secret } from 'aws-cdk-lib/aws-secretsmanager'
 import { StringParameter } from 'aws-cdk-lib/aws-ssm'
 import { Construct } from 'constructs'
 import { EmailBackendFunction } from '../lambda/emailBackend-function'
@@ -29,15 +29,16 @@ export type ContactBackendThrottlingProps = {
 }
 
 export type ContactBackendProps = {
+  mailFrom: string;
   mailTo: string;
   mailCc?: string;
   mailBcc?: string;
-  mailFromDomain: string;
   mailFromDisplayName: string;
   baseDomain: string;
   cname?: string;
   throttling?: ContactBackendThrottlingProps;
   mailTemplateKey?: string;
+  gmailSecretArn: string;
 }
 
 export class ContactBackend extends Construct {
@@ -47,15 +48,16 @@ export class ContactBackend extends Construct {
     super(scope, id)
 
     const {
+      mailFrom,
       mailTo,
       mailCc,
       mailBcc,
-      mailFromDomain,
       mailFromDisplayName,
       baseDomain,
       cname,
       throttling,
       mailTemplateKey,
+      gmailSecretArn,
     } = props
 
     this.addThrottlingValidation(throttling)
@@ -102,10 +104,11 @@ export class ContactBackend extends Construct {
         MAIL_TO: mailTo,
         MAIL_CC: mailCc || '',
         MAIL_BCC: mailBcc || '',
-        MAIL_FROM: `contact@${mailFromDomain}`,
+        MAIL_FROM: mailFrom,
         MAIL_FROM_DISPLAY_NAME: mailFromDisplayName,
         MAIL_TEMPLATE_BUCKET: mailTemplateBucket?.bucketName || '',
         MAIL_TEMPLATE_KEY: mailTemplateKey || '',
+        GMAIL_SECRET_ARN: gmailSecretArn,
         ALLOWED_ORIGIN: corsOrigin,
         ...(throttling && {
           THROTTLING_TABLE_NAME: this.throttlingTable!.tableName,
@@ -115,12 +118,11 @@ export class ContactBackend extends Construct {
       },
       layers: [powertoolsLayer],
     })
-    lambda.addToRolePolicy(new PolicyStatement({
-      actions: ['ses:SendEmail'],
-      resources: ['*'],
-    }))
     this.throttlingTable?.grantReadWriteData(lambda)
     mailTemplateBucket?.grantRead(lambda)
+
+    const gmailSecret = Secret.fromSecretCompleteArn(this, 'GmailSecret', gmailSecretArn)
+    gmailSecret.grantRead(lambda)
 
     const corsOptions: CorsOptions = {
       allowCredentials: true,

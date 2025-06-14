@@ -5,9 +5,9 @@ import { ContactBackend, ContactBackendThrottlingProps } from '../constructs/Con
 
 export type NextJsHostingContactBackendProps = {
   /**
-   * Base domain where the email should be sent from
+   * Mail from
    */
-  readonly mailFromDomain: string;
+  readonly mailFrom: string;
   /**
    * Mail from display name
    */
@@ -37,6 +37,10 @@ export type NextJsHostingContactBackendProps = {
    * @default: use default template
    */
   readonly mailTemplateKey?: string;
+  /**
+   * Gmail secret arn
+   */
+  readonly gmailSecretArn: string;
 }
 
 export type NextJsHostingStackProps = {
@@ -86,12 +90,13 @@ export class NextJsHostingStack extends Stack {
     if (contactBackend) {
       new ContactBackend(this, 'ContactBackend', {
         baseDomain: domainName,
+        mailFrom: contactBackend.mailFrom,
         mailTo: contactBackend.mailTo,
         mailCc: contactBackend.mailCc,
         mailBcc: contactBackend.mailBcc,
         mailTemplateKey: contactBackend.mailTemplateKey,
         mailFromDisplayName: contactBackend.mailFromDisplayName,
-        mailFromDomain: contactBackend.mailFromDomain,
+        gmailSecretArn: contactBackend.gmailSecretArn,
         throttling: contactBackend.throttling,
         cname,
       })

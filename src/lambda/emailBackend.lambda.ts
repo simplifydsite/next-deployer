@@ -1,7 +1,7 @@
 import { Logger } from '@aws-lambda-powertools/logger'
 import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware'
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import { SendEmailCommand, SESClient } from '@aws-sdk/client-ses'
+import { GetSecretValueCommand, SecretsManagerClient } from '@aws-sdk/client-secrets-manager'
 import middy from '@middy/core'
 import errorLogger from '@middy/error-logger'
 import httpCors from '@middy/http-cors'
@@ -9,10 +9,14 @@ import httpErrorHandler from '@middy/http-error-handler'
 import httpHeaderNormalizer from '@middy/http-header-normalizer'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { format } from 'date-fns'
+import { google } from 'googleapis'
+import { gmail } from 'googleapis/build/src/apis/gmail'
 import { BadRequest, InternalServerError, TooManyRequests } from 'http-errors'
 import { getMandatoryEnv } from '../utils/getMandatoryEnv'
 import { isEmail } from '../utils/isEmail'
 import { ThrottlingService } from './throttling/ThrottlingService'
+import { createEmailRaw } from '../utils/createEmailRaw'
+import { GmailCredentials } from './types/GmailCredentials'
 
 const logger = new Logger({ serviceName: 'emailBackend' })
 const MAIL_TO = getMandatoryEnv('MAIL_TO')
@@ -26,8 +30,9 @@ const THROTTLING_RATE_LIMIT = process.env.THROTTLING_RATE_LIMIT
 const THROTTLING_WINDOW = process.env.THROTTLING_WINDOW
 const MAIL_TEMPLATE_BUCKET = process.env.MAIL_TEMPLATE_BUCKET
 const MAIL_TEMPLATE_KEY = process.env.MAIL_TEMPLATE_KEY
-const sesClient = new SESClient()
+const GMAIL_SECRET_ARN = process.env.GMAIL_SECRET_ARN
 const s3Client = new S3Client()
+const secretsManagerClient = new SecretsManagerClient()
 const throttlingService = (THROTTLING_TABLE_NAME && THROTTLING_RATE_LIMIT && THROTTLING_WINDOW) ?
   new ThrottlingService({
     tableName: THROTTLING_TABLE_NAME,
@@ -84,31 +89,39 @@ const sendEmail = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyRe
   const mailTo = MAIL_TO.split(',').map(m => m.trim())
   const mailCc = MAIL_CC ? MAIL_CC.split(',').map(m => m.trim()) : []
   const mailBcc = MAIL_BCC ? MAIL_BCC.split(',').map(m => m.trim()) : []
-  const command = new SendEmailCommand({
-    Destination: {
-      ToAddresses: mailTo,
-      CcAddresses: mailCc,
-      BccAddresses: mailBcc,
-    },
-    Source: `${MAIL_FROM_DISPLAY_NAME} <${MAIL_FROM}>`,
-    ReplyToAddresses: [body.fromEmail],
-    Message: {
-      Subject: {
-        Data: 'Neue Kontaktanfrage',
-        Charset: 'utf-8',
-      },
-      Body: {
-        Html: {
-          Data: mailTemplate,
-          Charset: 'utf-8',
-        },
-      },
-    },
-  })
+
   await throttlingService?.checkAllowed(() => {
     throw new TooManyRequests(JSON.stringify({ error: 'Too many requests. Please try again later.' }))
   })
-  await sesClient.send(command)
+  const gmailSecretResponse = await secretsManagerClient.send(new GetSecretValueCommand({
+    SecretId: GMAIL_SECRET_ARN,
+  }))
+  const gmailSecret = JSON.parse(gmailSecretResponse.SecretString!) as GmailCredentials
+  const auth = new google.auth.JWT({
+    email: gmailSecret.client_email,
+    key: gmailSecret.private_key,
+    scopes: 'https://www.googleapis.com/auth/gmail.send',
+    subject: MAIL_FROM,
+  })
+  const gmailClient = gmail({
+    version: 'v1',
+    auth,
+  })
+  const email = createEmailRaw({
+    to: mailTo,
+    cc: mailCc,
+    bcc: mailBcc,
+    htmlBody: mailTemplate,
+    subject: 'Neue Kontaktanfrage',
+    from: MAIL_FROM,
+    fromDisplayName: MAIL_FROM_DISPLAY_NAME,
+  })
+  await gmailClient.users.messages.send({
+    userId: 'me',
+    requestBody: {
+      raw: email,
+    },
+  })
   return {
     statusCode: 200,
     body: JSON.stringify({ message: 'Sent' }),
