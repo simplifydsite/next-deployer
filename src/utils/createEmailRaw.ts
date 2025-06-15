@@ -16,8 +16,8 @@ export const createEmailRaw = ({ to, cc, bcc, fromDisplayName, from, subject, ht
   const data = [
     `From: "${fromDisplayName}" <${from}>`,
     `To: ${toHeader}`,
-    ccHeader,
-    bccHeader,
+    ...(ccHeader ? [ccHeader] : []),
+    ...(bccHeader ? [bccHeader] : []),
     `Subject: =?utf-8?B?${Buffer.from(subject).toString('base64')}?=`,
     'MIME-Version: 1.0',
     `Content-Type: multipart/alternative; boundary="${boundary}"`,
