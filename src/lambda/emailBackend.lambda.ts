@@ -116,12 +116,23 @@ const sendEmail = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyRe
     from: MAIL_FROM,
     fromDisplayName: MAIL_FROM_DISPLAY_NAME,
   })
-  await gmailClient.users.messages.send({
+  const response = await gmailClient.users.messages.send({
     userId: 'me',
     requestBody: {
       raw: email,
     },
   })
+  logger.info('Sent email', {
+    body,
+    responseOk: response.ok,
+    response: response,
+  })
+  if (!response.ok) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Failed to send message' }),
+    }
+  }
   return {
     statusCode: 200,
     body: JSON.stringify({ message: 'Sent' }),
