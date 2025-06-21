@@ -66,6 +66,18 @@ export type NextJsHostingStackProps = {
    * Contact backend props
    */
   readonly contactBackend?: NextJsHostingContactBackendProps;
+  /**
+   * Website index document
+   *
+   * @default index.html
+   */
+  readonly websiteIndexDocument?: string;
+  /**
+   * Website error document. The document that is delivered, if the key was not found.
+   *
+   * @default 404/index.html
+   */
+  readonly websiteErrorDocument?: string;
 } & StackProps
 
 export class NextJsHostingStack extends Stack {
@@ -78,6 +90,8 @@ export class NextJsHostingStack extends Stack {
       domainName,
       cname,
       contactBackend,
+      websiteIndexDocument,
+      websiteErrorDocument,
     } = props
 
     new CloudfrontHostedS3Bucket(this, 'HostedBucket', {
@@ -85,6 +99,8 @@ export class NextJsHostingStack extends Stack {
       deploymentUsername,
       domainName,
       cname,
+      websiteIndexDocument,
+      websiteErrorDocument,
     })
 
     if (contactBackend) {
