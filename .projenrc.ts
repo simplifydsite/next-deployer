@@ -53,7 +53,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
     runtime: LambdaRuntime.NODEJS_22_X,
     bundlingOptions: {
       externals: ['@aws-sdk/*', '@aws-lambda-powertools/*'],
-      sourcemap: true,
     },
   },
 })

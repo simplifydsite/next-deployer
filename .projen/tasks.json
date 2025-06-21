@@ -56,7 +56,7 @@
       "description": "Create a JavaScript bundle from src/lambda/emailBackend.lambda.ts",
       "steps": [
         {
-          "exec": "esbuild --bundle src/lambda/emailBackend.lambda.ts --target=\"node22\" --platform=\"node\" --outfile=\"assets/lambda/emailBackend.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:@aws-sdk/* --external:@aws-lambda-powertools/* --sourcemap"
+          "exec": "esbuild --bundle src/lambda/emailBackend.lambda.ts --target=\"node22\" --platform=\"node\" --outfile=\"assets/lambda/emailBackend.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:@aws-sdk/* --external:@aws-lambda-powertools/*"
         }
       ]
     },
@@ -65,7 +65,7 @@
       "description": "Continuously update the JavaScript bundle from src/lambda/emailBackend.lambda.ts",
       "steps": [
         {
-          "exec": "esbuild --bundle src/lambda/emailBackend.lambda.ts --target=\"node22\" --platform=\"node\" --outfile=\"assets/lambda/emailBackend.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:@aws-sdk/* --external:@aws-lambda-powertools/* --sourcemap --watch"
+          "exec": "esbuild --bundle src/lambda/emailBackend.lambda.ts --target=\"node22\" --platform=\"node\" --outfile=\"assets/lambda/emailBackend.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:@aws-sdk/* --external:@aws-lambda-powertools/* --watch"
         }
       ]
     },

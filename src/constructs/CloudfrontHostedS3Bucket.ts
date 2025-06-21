@@ -48,6 +48,12 @@ export interface CloudfrontHostedS3BucketProps {
    * @default index.html
    */
   readonly websiteIndexDocument?: string;
+  /**
+   * Website error document. The document that is delivered, if the key was not found.
+   *
+   * @default 404/index.html
+   */
+  readonly websiteErrorDocument?: string;
 }
 
 export class CloudfrontHostedS3Bucket extends Construct {
@@ -65,6 +71,7 @@ export class CloudfrontHostedS3Bucket extends Construct {
       cname,
       deploymentUsername,
       websiteIndexDocument = 'index.html',
+      websiteErrorDocument = '404/index.html',
     } = props
 
     const fullDomain = cname ? `${cname}.${domainName}` : domainName
@@ -80,6 +87,7 @@ export class CloudfrontHostedS3Bucket extends Construct {
 
     this.bucket = new Bucket(this, 'Bucket', {
       websiteIndexDocument: websiteIndexDocument,
+      websiteErrorDocument: websiteErrorDocument,
       autoDeleteObjects: true,
       bucketName,
       encryption: BucketEncryption.S3_MANAGED,
