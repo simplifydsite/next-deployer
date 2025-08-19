@@ -122,6 +122,8 @@ export class CloudfrontHostedS3Bucket extends Construct {
           defaultTtl: Duration.days(30),
           maxTtl: Duration.days(30),
           headerBehavior: CacheHeaderBehavior.none(),
+          enableAcceptEncodingBrotli: true,
+          enableAcceptEncodingGzip: true,
         }),
         viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         compress: true,
