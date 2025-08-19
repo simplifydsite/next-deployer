@@ -5,13 +5,14 @@ import { NodePackageManager, NpmAccess } from 'projen/lib/javascript'
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'd4ndel1on',
   authorAddress: 'github.overfed135@passmail.net',
-  cdkVersion: '2.196.0',
+  cdkVersion: '2.211.0',
   defaultReleaseBranch: 'main',
   name: '@simplifyd/next-deployer',
   projenrcTs: true,
   minMajorVersion: 1,
   repositoryUrl: 'https://github.com/simplifydsite/next-deployer.git',
   eslint: true,
+  jsiiVersion: '5.8',
   depsUpgradeOptions: {
     workflow: false,
   },
