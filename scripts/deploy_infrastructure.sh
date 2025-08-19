@@ -35,6 +35,7 @@ export GMAIL_SECRET_ARN
 if [[ -n "${MAIL_TEMPLATE_MJML}" && -f "${MAIL_TEMPLATE_MJML}" ]]; then
   echo "* MAIL_TEMPLATE found."
   export MAIL_TEMPLATE_KEY=contact.html
+  mkdir -p /tmp/cdk
   MAIL_TEMPLATE_FILE="/tmp/cdk/${MAIL_TEMPLATE_KEY}"
   if [[ ! -d node_modules/mjml ]]; then
     echo "mjml is not installed to compile mail template. installing..."
