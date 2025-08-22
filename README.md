@@ -82,7 +82,7 @@ This makes sure that credentials are not committed to git.
 ### add dependency
 
 ```bash
-npm install --save-dev @simplifyd/next-deployer tsx
+npm install --save-dev @simplifyd/next-deployer tsx aws-cdk
 ```
 
 ### deploy infrastructure
