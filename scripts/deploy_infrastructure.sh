@@ -67,6 +67,9 @@ PROJECT_NAME=$(cat package.json | jq -r .name)
 OUTPUT_DIR="/tmp/cdk/${PROJECT_NAME}/${1}"
 CDK_OUT_FILE="${OUTPUT_DIR}/cdk.out.json"
 mkdir -p "${OUTPUT_DIR}"
+npm i --no-save \
+  tsx@latest \
+  aws-cdk@latest
 npx cdk@latest deploy \
   --app "npx tsx@latest node_modules/@simplifyd/next-deployer/src/index.ts" \
   --all \
