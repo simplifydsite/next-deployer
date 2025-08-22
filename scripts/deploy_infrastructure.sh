@@ -2,7 +2,7 @@
 
 set -e
 
-if [ "$#" -ne 2 ]
+if [ "$#" -ne 1 ]
 then
   echo -e "${RED}ERROR${ENDCOLOR}: Provide env"
   echo
