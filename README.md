@@ -11,6 +11,7 @@ Set `output` to `export` in `next.config.ts`
 ```typescript
 const nextConfig: NextConfig = {
   output: 'export', // creates a static export
+  trailingSlash: true, // important to provide index.html redirects
 };
 ```
 
@@ -36,6 +37,8 @@ Parameters:
     * e.g. eu-central-1 for Frankfurt or eu-west-1 for Dublin
 * AWS_ACCOUNT
     * AWS Account id
+* AWS_PROFILE
+    * AWS Profile
 * MAIL_FROM [optional]
     * Add to deploy a contact backend
     * Email to send from
@@ -65,6 +68,7 @@ DOMAIN_NAME=my-awesome-domain.de
 CNAME=my-awesome-project
 AWS_REGION=eu-central-1
 AWS_ACCOUNT=XXXXXXXXXXXX
+AWS_PROFILE=simplifyd
 MAIL_FROM_DOMAIN=my-awesome-mail-domain.de
 MAIL_FROM_DISPLAY_NAME=My Customer
 MAIL_TO=my-customer@my-customer-domain.de,my-other-customer@test.de
@@ -84,7 +88,7 @@ npm install --save-dev @simplifyd/next-deployer tsx
 ### deploy infrastructure
 
 ```bash
- npx -p @simplifyd/next-deployer next-deploy-infrastructure <env> <aws-profile>
+ npx -p @simplifyd/next-deployer next-deploy-infrastructure <env>
 ```
 
 ### deploy frontend
