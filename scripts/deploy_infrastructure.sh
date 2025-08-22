@@ -33,6 +33,11 @@ export THROTTLING_WINDOW
 export MAIL_TEMPLATE_MJML
 export GMAIL_SECRET_ARN
 
+if [[ -z "$AWS_PROFILE" ]]; then
+  echo "ERROR: The AWS_PROFILE variable is absent or empty."
+  exit 1
+fi
+
 if identityOutput=$(aws sts get-caller-identity --profile "${AWS_PROFILE}" 2>&1); then
   echo "- Token is valid ✅"
 else
