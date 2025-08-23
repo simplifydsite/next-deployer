@@ -13,12 +13,7 @@ source ".env.${1}"
 export S3_BUCKET
 export STACK_NAME
 export AWS_ACCOUNT
-if [[ -z "${IS_CI}" ]]; then
-  echo "Local deployment. Use AWS_PROFILE."
-  export AWS_PROFILE
-else
-  echo "Github deployment. Use credentials."
-fi
+export AWS_PROFILE
 export CNAME
 export DOMAIN_NAME
 export AWS_REGION
@@ -32,12 +27,8 @@ export THROTTLING_WINDOW
 export MAIL_TEMPLATE_MJML
 export GMAIL_SECRET_ARN
 
-if [[ -z "${AWS_PROFILE}" ]];
+if [[ -z "${IS_CI}" ]];
 then
-  echo "Using credentials from environment variables AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY"
-  unset AWS_PROFILE
-  unset AWS_DEFAULT_PROFILE
-else
   echo "Using AWS_PROFILE ${AWS_PROFILE}"
   export AWS_DEFAULT_PROFILE="${AWS_PROFILE}"
 
@@ -50,6 +41,10 @@ else
     aws sso login --profile "${AWS_PROFILE}"
     echo "- Token is successfully refreshed ✅"
   fi
+else
+  echo "Using credentials from environment variables AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY"
+  unset AWS_PROFILE
+  unset AWS_DEFAULT_PROFILE
 fi
 
 echo "Using s3 bucket ${S3_BUCKET}"
