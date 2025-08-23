@@ -13,7 +13,9 @@ source ".env.${1}"
 export S3_BUCKET
 export STACK_NAME
 export AWS_ACCOUNT
-export AWS_PROFILE
+if [ -z "$GITHUB_ACTIONS" ]; then
+  export AWS_PROFILE
+fi
 export CNAME
 export DOMAIN_NAME
 export AWS_REGION
