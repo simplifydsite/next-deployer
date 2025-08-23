@@ -94,7 +94,7 @@ npm install --save-dev @simplifyd/next-deployer@latest tsx@latest aws-cdk@latest
 ### deploy frontend
 
 ```bash
- npx -p @simplifyd/next-deployer next-deploy <env>
+ npx next-deploy <env>
 ```
 
 ### add github workflows [optional]
@@ -102,7 +102,7 @@ npm install --save-dev @simplifyd/next-deployer@latest tsx@latest aws-cdk@latest
 Add a github workflow to deploy the code to AWS
 
 ```bash
- npx -p @simplifyd/next-deployer add-workflows
+ npx next-deploy-workflows
 ```
 
 Will automatically deploy pushes to main to production and pull requests with a label called `test` to dev.

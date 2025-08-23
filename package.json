@@ -5,7 +5,7 @@
     "url": "https://github.com/simplifydsite/next-deployer.git"
   },
   "bin": {
-    "add-workflows": "scripts/add_workflows.sh",
+    "next-deploy-workflows": "scripts/add_workflows.sh",
     "next-deploy": "scripts/deploy.sh",
     "next-deploy-infrastructure": "scripts/deploy_infrastructure.sh"
   },
