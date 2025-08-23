@@ -35,6 +35,16 @@ else
   echo "Using AWS_PROFILE ${2}"
   export AWS_PROFILE="${2}"
   export AWS_DEFAULT_PROFILE="${2}"
+
+  if identityOutput=$(aws sts get-caller-identity --profile "${AWS_PROFILE}" 2>&1); then
+    echo "- Token is valid ✅"
+  else
+    echo "$identityOutput"
+    echo "- Token is invalid ⚠️"
+    echo "  -> Refreshing..."
+    aws sso login --profile "${AWS_PROFILE}"
+    echo "- Token is successfully refreshed ✅"
+  fi
 fi
 
 echo "Using s3 bucket ${S3_BUCKET}"

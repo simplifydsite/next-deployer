@@ -82,13 +82,13 @@ This makes sure that credentials are not committed to git.
 ### add dependency
 
 ```bash
-npm install --save-dev @simplifyd/next-deployer tsx aws-cdk
+npm install --save-dev @simplifyd/next-deployer@latest tsx@latest aws-cdk@latest
 ```
 
 ### deploy infrastructure
 
 ```bash
- npx -p @simplifyd/next-deployer next-deploy-infrastructure <env>
+ npx  next-deploy-infrastructure <env>
 ```
 
 ### deploy frontend

@@ -48,7 +48,6 @@ else
   echo "- Token is successfully refreshed ✅"
 fi
 
-
 if [[ -n "${MAIL_TEMPLATE_MJML}" && -f "${MAIL_TEMPLATE_MJML}" ]]; then
   echo "* MAIL_TEMPLATE found."
   export MAIL_TEMPLATE_KEY=contact.html
