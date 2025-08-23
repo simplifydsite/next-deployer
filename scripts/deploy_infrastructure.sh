@@ -68,10 +68,10 @@ OUTPUT_DIR="/tmp/cdk/${PROJECT_NAME}/${1}"
 CDK_OUT_FILE="${OUTPUT_DIR}/cdk.out.json"
 mkdir -p "${OUTPUT_DIR}"
 npm i --no-save \
-  tsx@latest \
-  aws-cdk@latest
-npx cdk@latest deploy \
-  --app "npx tsx@latest node_modules/@simplifyd/next-deployer/src/index.ts" \
+  tsx \
+  aws-cdk
+npx cdk deploy \
+  --app "npx tsx node_modules/@simplifyd/next-deployer/src/index.ts" \
   --all \
   --profile "${AWS_PROFILE}" \
   --output "${OUTPUT_DIR}" \
