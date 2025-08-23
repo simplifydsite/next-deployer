@@ -13,6 +13,7 @@ source ".env.${1}"
 export S3_BUCKET
 export STACK_NAME
 export AWS_ACCOUNT
+export AWS_PROFILE
 export CNAME
 export DOMAIN_NAME
 export AWS_REGION
@@ -26,15 +27,14 @@ export THROTTLING_WINDOW
 export MAIL_TEMPLATE_MJML
 export GMAIL_SECRET_ARN
 
-if [ -z "${2}" ];
+if [ -z "${AWS_PROFILE}" ];
 then
   echo "Using credentials from environment variables AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY"
   unset AWS_PROFILE
   unset AWS_DEFAULT_PROFILE
 else
-  echo "Using AWS_PROFILE ${2}"
-  export AWS_PROFILE="${2}"
-  export AWS_DEFAULT_PROFILE="${2}"
+  echo "Using AWS_PROFILE ${AWS_PROFILE}"
+  export AWS_DEFAULT_PROFILE="${AWS_PROFILE}"
 
   if identityOutput=$(aws sts get-caller-identity --profile "${AWS_PROFILE}" 2>&1); then
     echo "- Token is valid ✅"
